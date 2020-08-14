@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "532077131617",
+    "firebase_url": "https://southside-pc-app.firebaseio.com",
+    "project_id": "southside-pc-app",
+    "storage_bucket": "southside-pc-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532077131617:android:78e72f869f76cdfb5ef720",
+        "android_client_info": {
+          "package_name": "org.southsidepc.southside"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532077131617-on4p1hbaep3vc69hl63hv31c5rs4gn2f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALg1m_YNaNnxiWI1RRnbsNVjtJUlFhuis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532077131617-on4p1hbaep3vc69hl63hv31c5rs4gn2f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "532077131617-qt30ldum727g1c63if1q9mq2qe818har.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "SPC.Southside-Presbyterian-Church"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
