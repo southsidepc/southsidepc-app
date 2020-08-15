@@ -6,6 +6,7 @@ import 'package:southsidepc/screens/home.dart';
 import 'package:southsidepc/screens/magnification.dart';
 import 'package:southsidepc/screens/navigatePodcast.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
   if (message.containsKey('data')) {
@@ -74,16 +75,42 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+enum MagnificationEnum { spotify }
+enum SermonsEnum { spotify, soundcloud, podcast }
+enum NavigateEnum { spotify, podcast }
+
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   String title = "Home";
   Widget _content = Home();
+  List<Widget> _action;
 
   void _setMagnification() {
     setState(() {
       title = "Magnification";
       _content = Magnification();
+      _action = <Widget>[
+        PopupMenuButton<MagnificationEnum>(
+          onSelected: (MagnificationEnum result) async {
+            String url = 'https://open.spotify.com/playlist/5p0cw0WFvC5Bmkf5vyR4bG?si=-oj_dClxRUeeOUOWbg091g';
+
+            if (result == MagnificationEnum.spotify) {
+              url = 'https://open.spotify.com/playlist/5p0cw0WFvC5Bmkf5vyR4bG?si=-oj_dClxRUeeOUOWbg091g';
+            }
+
+            if (await canLaunch(url)) {
+              await launch(url);
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<MagnificationEnum>>[
+            const PopupMenuItem<MagnificationEnum>(
+              value: MagnificationEnum.spotify,
+              child: Text('Open Spotify'),
+            ),
+          ],
+        )
+      ];
     });
   }
 
@@ -91,6 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       title = "Coffee";
       _content = Coffee();
+      _action = null;
     });
   }
 
@@ -98,6 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       title = "Home";
       _content = Home();
+      _action = null;
     });
   }
 
@@ -105,6 +134,35 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       title = "Navigate Podcast";
       _content = NavigatePodcast();
+      _action = <Widget>[
+        PopupMenuButton<NavigateEnum>(
+          onSelected: (NavigateEnum result) async {
+            String url = 'https://open.spotify.com/show/0PRkJlUMpq0dhBoUMhFsyQ';
+
+            if (result == NavigateEnum.spotify) {
+              url = 'https://open.spotify.com/show/0PRkJlUMpq0dhBoUMhFsyQ';
+            } else if (result == NavigateEnum.podcast) {
+              url = 'pcast://feed.podbean.com/navigate/feed.xml';
+            }
+
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<NavigateEnum>>[
+            PopupMenuItem<NavigateEnum>(
+              value: NavigateEnum.spotify,
+              child: Text('Open Spotify'),
+            ),
+            PopupMenuItem<NavigateEnum>(
+              value: NavigateEnum.podcast,
+              child: Text('Open Podcast'),
+            ),
+          ],
+        )
+      ];
     });
   }
 
@@ -112,6 +170,35 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       title = "Sermons";
       _content = Sermons();
+      _action = <Widget>[
+        PopupMenuButton<SermonsEnum>(
+          onSelected: (SermonsEnum result) async {
+            String url = 'https://open.spotify.com/show/0HrMcpDD9YDdyMfOyojmFe?si=NUvzGQUwTrCxijZHAkSvcg';
+
+            if (result == SermonsEnum.spotify) {
+              url = 'https://open.spotify.com/show/0HrMcpDD9YDdyMfOyojmFe?si=NUvzGQUwTrCxijZHAkSvcg';
+            } else if (result == SermonsEnum.podcast) {
+              url = 'pcast://feeds.soundcloud.com/users/soundcloud:users:212248612/sounds.rss';
+            }
+
+            if (await canLaunch(url)) {
+              await launch(url);
+            } else {
+
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<SermonsEnum>>[
+            PopupMenuItem<SermonsEnum>(
+              value: SermonsEnum.spotify,
+              child: Text('Open Spotify'),
+            ),
+            PopupMenuItem<SermonsEnum>(
+              value: SermonsEnum.podcast,
+              child: Text('Open Podcast'),
+            ),
+          ],
+        )
+      ];
     });
   }
 
@@ -119,6 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       title = "Contact Us";
       _content = ContactUs();
+      _action = null;
     });
   }
 
@@ -145,6 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        actions: _action,
       ),
       body: _content,
       drawer: Drawer(
