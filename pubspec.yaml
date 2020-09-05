@@ -24,6 +24,7 @@ dependencies:
   http: ^0.12.2
   firebase_messaging: ^6.0.16
   url_launcher: ^5.5.0
+  community_material_icon: ^5.3.45
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -77,3 +78,8 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
     - assets/SP001-Logo-Icon-White.png
+    - assets/Home.png
+    - assets/google_podcast.png
+    - assets/logo.png
+    - assets/facebook_icon.png
+    - assets/instagram_icon.png

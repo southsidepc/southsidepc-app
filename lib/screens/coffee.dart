@@ -1,3 +1,4 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -77,19 +78,6 @@ class CoffeeState extends State<Coffee> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              Center(
-                child: Text(
-                  "Order Your Coffee",
-                  style: Theme.of(context)
-                      .primaryTextTheme
-                      .headline4
-                      .copyWith(color: Colors.black),
-                ),
-              ),
-              SizedBox(
-                height: 32,
-                child: Container(),
-              ),
               TextFormField(
                 controller: _nameController,
                 validator: (value) {
@@ -132,7 +120,7 @@ class CoffeeState extends State<Coffee> {
               ),
               TextFormField(
                 validator: (value) {
-                  if (_serviceDate == null || _serviceDate.weekday != 7) {
+                  if (_serviceDate == null) {
                     return 'Please select a Sunday';
                   }
                   return null;
@@ -161,7 +149,7 @@ class CoffeeState extends State<Coffee> {
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Service Date',
-                    suffixIcon: Icon(Icons.calendar_today)),
+                    suffixIcon: Icon(CommunityMaterialIcons.calendar_outline)),
                 controller: _serviceDateController,
                 readOnly: _loading,
               ),
