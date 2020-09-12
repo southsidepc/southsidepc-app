@@ -51,6 +51,22 @@ class MyApp extends StatelessWidget {
       },
     );
 
+    MaterialColor southsideNavyDark = MaterialColor(
+      0xFF8a899a,
+      <int, Color>{
+        50: const Color(0xFF8a899a),
+        100: const Color(0xFF8a899a),
+        200: const Color(0xFF8a899a),
+        300: const Color(0xFF8a899a),
+        400: const Color(0xFF8a899a),
+        500: const Color(0xFF8a899a),
+        600: const Color(0xFF8a899a),
+        700: const Color(0xFF8a899a),
+        800: const Color(0xFF8a899a),
+        900: const Color(0xFF8a899a),
+      },
+    );
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -64,20 +80,37 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
+        appBarTheme: AppBarTheme(
+            elevation: 0,
+            brightness: Brightness.dark,
+            color: Colors.white
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            unselectedIconTheme: IconThemeData(
+                color: Theme.of(context).iconTheme.color.withAlpha(100)),
+            selectedIconTheme: IconThemeData(color: southsideNavy),
+            selectedItemColor: southsideNavy,
+            ),
         primarySwatch: southsideNavy,
       ),
       darkTheme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: southsideNavy,
-      ),
+          brightness: Brightness.dark,
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: southsideNavyDark,
+          accentColor: southsideNavyDark,
+          appBarTheme: AppBarTheme(elevation: 0, brightness: Brightness.dark),
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              backgroundColor: Color(0xFF212121),
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.white.withAlpha(100))),
       themeMode: ThemeMode.system,
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -141,24 +174,18 @@ class _MyHomePageState extends State<MyHomePage> {
           "Coffee",
           style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
         ),
-        elevation: 0,
-        backgroundColor: Theme.of(context).canvasColor,
       ),
       AppBar(
         title: Text(
           "Media",
           style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
         ),
-        elevation: 0,
-        backgroundColor: Theme.of(context).canvasColor,
       ),
       AppBar(
         title: Text(
           "Connect",
           style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
         ),
-        elevation: 0,
-        backgroundColor: Theme.of(context).canvasColor,
       ),
     ];
 
@@ -166,24 +193,24 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: _appbars.elementAt(_selectedIndex),
       body: _screens.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        unselectedIconTheme: IconThemeData(color: Theme.of(context).iconTheme.color.withAlpha(100)),
-        selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        selectedLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
-        selectedItemColor: Theme.of(context).primaryColor,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(CommunityMaterialIcons.home_outline), title: Text('Home')),
+              icon: Icon(CommunityMaterialIcons.home_outline),
+              title: Text('Home')),
           BottomNavigationBarItem(
             icon: Icon(CommunityMaterialIcons.coffee_outline),
             title: Text('Coffee'),
           ),
           BottomNavigationBarItem(
-              icon: Icon(CommunityMaterialIcons.music_note_outline), title: Text('Media')),
+              icon: Icon(CommunityMaterialIcons.music_note_outline),
+              title: Text('Media')),
           BottomNavigationBarItem(
-              icon: Icon(CommunityMaterialIcons.link_box_outline), title: Text('Connect'))
+              icon: Icon(CommunityMaterialIcons.link_box_outline),
+              title: Text('Connect'))
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }

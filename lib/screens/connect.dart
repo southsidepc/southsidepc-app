@@ -53,8 +53,16 @@ class Connect extends StatelessWidget {
                   children: [
                     Container(
                         child: GestureDetector(
-                            onTap: () {
-                              launch("https://www.facebook.com/southsidepc");
+                            onTap: () async {
+                              try {
+                                bool launched = await launch("fb://page/southsidepc");
+
+                                if (!launched) {
+                                  await launch("https://www.facebook.com/southsidepc");
+                                }
+                              } catch (e) {
+                                await launch("https://www.facebook.com/southsidepc");
+                              }
                             },
                             child: Column(
                               children: [
