@@ -5,7 +5,7 @@ class Sermons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InAppWebView(
-      initialUrl: "https://soundcloud.com/southside-presbyterian",
+      initialUrlRequest: URLRequest(url: Uri.https('soundcloud.com', 'southside-presbyterian')),
     );
   }
 }

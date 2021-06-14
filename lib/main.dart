@@ -1,21 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:southsidepc/screens/Sermons.dart';
+import 'package:southsidepc/screens/checkIn.dart';
 import 'package:southsidepc/screens/coffee.dart';
-import 'package:southsidepc/screens/contactUs.dart';
+import 'package:southsidepc/screens/event.dart';
 import 'package:southsidepc/screens/home.dart';
-import 'package:southsidepc/screens/magnification.dart';
-import 'package:southsidepc/screens/navigatePodcast.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:southsidepc/screens/profile.dart';
 import 'package:southsidepc/screens/resources.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:southsidepc/screens/connect.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
+  print("onBackgroundMessage: $message");
   if (message.containsKey('data')) {
     // Handle data message
     final dynamic data = message['data'];
+    print(data);
   }
 
   if (message.containsKey('notification')) {
@@ -28,7 +29,38 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(new MyApp());
+  runApp(new App());
+}
+
+class App extends StatelessWidget {
+  // Create the initilization Future outside of `build`:
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          return Center();
+        }
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MyApp();
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        return Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage('assets/Home.png'), fit: BoxFit.cover)
+          ),
+        );
+      },
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -68,7 +100,12 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Southside',
+      routes: {
+        MyHomePage.routeName: (context) => MyHomePage(),
+        Event.routeName: (context) => Event()
+      },
+      initialRoute: MyHomePage.routeName,
       theme: ThemeData(
         canvasColor: Colors.white,
         // This is the theme of your application.
@@ -81,7 +118,6 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         appBarTheme: AppBarTheme(
-            elevation: 0,
             brightness: Brightness.dark,
             color: Colors.white
         ),
@@ -92,6 +128,7 @@ class MyApp extends StatelessWidget {
             selectedItemColor: southsideNavy,
             ),
         primarySwatch: southsideNavy,
+        buttonColor: southsideNavy
       ),
       darkTheme: ThemeData(
           brightness: Brightness.dark,
@@ -107,6 +144,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: southsideNavyDark,
           accentColor: southsideNavyDark,
           appBarTheme: AppBarTheme(elevation: 0, brightness: Brightness.dark),
+          buttonColor: southsideNavyDark,
           bottomNavigationBarTheme: BottomNavigationBarThemeData(
               backgroundColor: Color(0xFF212121),
               selectedItemColor: Colors.white,
@@ -119,6 +157,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
+  static const routeName = '/home';
 
   final String title;
 
@@ -131,14 +170,15 @@ enum SermonsEnum { spotify, soundcloud, podcast }
 enum NavigateEnum { spotify, podcast }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   int _selectedIndex = 0;
 
   List<Widget> _screens = <Widget>[
     Home(),
+    CheckIn(),
     Coffee(),
     Resources(),
     Connect(),
+    Profile()
   ];
 
   void _onItemTapped(int index) {
@@ -151,24 +191,57 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    _firebaseMessaging.configure(
+    /*_firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
+        *//*Navigator.pushNamed(
+          context,
+          Event.routeName,
+          arguments: EventArguments(
+              message['data']['eventId']
+          ),
+        );*//*
       },
       onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
+        if (message['data']['eventId'] != null && message['data']['eventId'] != "" && ModalRoute.of(context).settings.name != Event.routeName) {
+          Navigator.pushNamed(
+            context,
+            Event.routeName,
+            arguments: EventArguments(
+                message['data']['eventId']
+            ),
+          );
+        }
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        if (message['data']['eventId'] != null && message['data']['eventId'] != "" && ModalRoute.of(context).settings.name != Event.routeName) {
+          Navigator.pushNamed(
+            context,
+            Event.routeName,
+            arguments: EventArguments(
+                message['data']['eventId']
+            ),
+          );
+        }
       },
     );
+    
+    _firebaseMessaging.subscribeToTopic('events');*/
   }
 
   @override
   Widget build(BuildContext context) {
     List<AppBar> _appbars = <AppBar>[
       null,
+      AppBar(
+        title: Text(
+          "Check In",
+          style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+        ),
+      ),
       AppBar(
         title: Text(
           "Coffee",
@@ -187,6 +260,12 @@ class _MyHomePageState extends State<MyHomePage> {
           style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
         ),
       ),
+      AppBar(
+        title: Text(
+          "Profile",
+          style: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
+        ),
+      ),
     ];
 
     return Scaffold(
@@ -196,17 +275,24 @@ class _MyHomePageState extends State<MyHomePage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(CommunityMaterialIcons.home_outline),
-              title: Text('Home')),
+              label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Icon(CommunityMaterialIcons.qrcode),
+            label: 'Check In',
+          ),
           BottomNavigationBarItem(
             icon: Icon(CommunityMaterialIcons.coffee_outline),
-            title: Text('Coffee'),
+            label: 'Coffee',
           ),
           BottomNavigationBarItem(
               icon: Icon(CommunityMaterialIcons.music_note_outline),
-              title: Text('Media')),
+              label: 'Media'),
           BottomNavigationBarItem(
               icon: Icon(CommunityMaterialIcons.link_box_outline),
-              title: Text('Connect'))
+              label: 'Connect'),
+          BottomNavigationBarItem(
+              icon: Icon(CommunityMaterialIcons.account_outline),
+              label: 'Profile')
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

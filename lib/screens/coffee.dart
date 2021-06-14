@@ -205,8 +205,10 @@ class CoffeeState extends State<Coffee> {
               ),
               RaisedButton(
                   elevation: 0,
-                  color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                  ),
                   onPressed: _loading
                       ? null
                       : () async {
@@ -216,7 +218,7 @@ class CoffeeState extends State<Coffee> {
                             });
 
                             http.Response response = await http.post(
-                                'http://www.iamacoffeeaddict.com/ssc-app/receive.php',
+                              Uri.http('www.iamacoffeeaddict.com', 'ssc-app/receive.php'),
                                 body: {
                                   'secretWord': '44fdcv8jf3',
                                   'name': _nameController.text,

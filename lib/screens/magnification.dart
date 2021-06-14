@@ -15,7 +15,7 @@ class Magnification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InAppWebView(
-      initialUrl: "https://open.spotify.com/playlist/5p0cw0WFvC5Bmkf5vyR4bG?si=-oj_dClxRUeeOUOWbg091g",
+      initialUrlRequest: URLRequest(url: Uri.https('open.spotify.com', 'playlist/5p0cw0WFvC5Bmkf5vyR4bG', {'si': '-oj_dClxRUeeOUOWbg091g'})),
     );
   }
 }
