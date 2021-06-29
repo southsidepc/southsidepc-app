@@ -1,10 +1,12 @@
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import "package:flutter/widgets.dart";
 import 'package:intl/intl.dart';
 
 class Coffee extends StatefulWidget {
-  Coffee({Key key}) : super(key: key);
+  Coffee({Key? key}) : super(key: key);
 
   @override
   CoffeeState createState() => CoffeeState();
@@ -81,7 +83,7 @@ class CoffeeState extends State<Coffee> {
               TextFormField(
                 controller: _nameController,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value?.isEmpty ?? true) {
                     return 'Please enter your name';
                   }
                   return null;
@@ -108,7 +110,8 @@ class CoffeeState extends State<Coffee> {
                 items: _services,
                 onChanged: _loading
                     ? null
-                    : (String newValue) {
+                    : (String? newValue) {
+                        if (newValue == null) return;
                         setState(() {
                           _service = newValue;
                         });
@@ -129,7 +132,7 @@ class CoffeeState extends State<Coffee> {
                 onTap: () async {
                   FocusScope.of(context).requestFocus(new FocusNode());
 
-                  DateTime newDate = await showDatePicker(
+                  DateTime? newDate = await showDatePicker(
                       context: context,
                       initialDate: _serviceDate,
                       firstDate: DateTime(2000),
@@ -164,7 +167,8 @@ class CoffeeState extends State<Coffee> {
                 items: _coffees,
                 onChanged: _loading
                     ? null
-                    : (String newValue) {
+                    : (String? newValue) {
+                        if (newValue == null) return;
                         setState(() {
                           _coffee = newValue;
                         });
@@ -187,7 +191,8 @@ class CoffeeState extends State<Coffee> {
                 items: _milks,
                 onChanged: _loading
                     ? null
-                    : (String newValue) {
+                    : (String? newValue) {
+                        if (newValue == null) return;
                         setState(() {
                           _milk = newValue;
                         });
@@ -207,18 +212,19 @@ class CoffeeState extends State<Coffee> {
                   elevation: 0,
                   textColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
+                    borderRadius: BorderRadius.circular(18.0),
                   ),
                   onPressed: _loading
                       ? null
                       : () async {
-                          if (_formKey.currentState.validate()) {
+                          if (_formKey.currentState?.validate() ?? false) {
                             setState(() {
                               _loading = true;
                             });
 
                             http.Response response = await http.post(
-                              Uri.http('www.iamacoffeeaddict.com', 'ssc-app/receive.php'),
+                                Uri.http('www.iamacoffeeaddict.com',
+                                    'ssc-app/receive.php'),
                                 body: {
                                   'secretWord': '44fdcv8jf3',
                                   'name': _nameController.text,

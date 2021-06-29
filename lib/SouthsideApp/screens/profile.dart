@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Profile extends StatefulWidget {
-  Profile({Key key}) : super(key: key);
+  Profile({Key? key}) : super(key: key);
 
   @override
   ProfileState createState() => ProfileState();
@@ -27,7 +27,9 @@ class ProfileState extends State<Profile> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              CircleAvatar(child: Text('WB'),)
+              CircleAvatar(
+                child: Text('WB'),
+              )
             ],
           ),
         ),

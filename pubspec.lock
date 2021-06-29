@@ -78,6 +78,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  cupertino_range_slider:
+    dependency: transitive
+    description:
+      name: cupertino_range_slider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
+  cupertino_setting_control:
+    dependency: "direct main"
+    description:
+      name: cupertino_setting_control
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   fake_async:
     dependency: transitive
     description:
