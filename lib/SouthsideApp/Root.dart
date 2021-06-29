@@ -3,7 +3,7 @@ import "package:community_material_icon/community_material_icon.dart";
 
 import "package:southsidepc/SouthsideApp/screens/home.dart";
 import "package:southsidepc/SouthsideApp/screens/event.dart";
-import "package:southsidepc/SouthsideApp/screens/checkin.dart";
+import "package:southsidepc/SouthsideApp/screens/checkIn.dart";
 import "package:southsidepc/SouthsideApp/screens/coffee.dart";
 import "package:southsidepc/SouthsideApp/screens/resources.dart";
 import "package:southsidepc/SouthsideApp/screens/connect.dart";
