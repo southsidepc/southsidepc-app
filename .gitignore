@@ -1,3 +1,5 @@
+/android/app/*.json
+
 # Miscellaneous
 *.class
 *.log
