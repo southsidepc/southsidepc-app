@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:southsidepc/instaflutter-login/constants.dart';
-import 'package:southsidepc/instaflutter-login/services/helper.dart';
-import 'package:southsidepc/instaflutter-login/ui/login/loginScreen.dart';
-import 'package:southsidepc/instaflutter-login/ui/signUp/signUpScreen.dart';
 
-<<<<<<< HEAD
+import 'user_base.dart';
+import 'constants.dart';
+import 'helper.dart';
+import 'loginScreen.dart';
+import 'signUpScreen.dart';
+
 class AuthScreen extends StatelessWidget {
-=======
-class AuthScreen extends StatefulWidget {
-  static const routeName = '/auth';
+  static const routeName = '/login_required';
 
-  @override
-  _AuthScreenState createState() => _AuthScreenState();
-}
+  final UserBase implementsUser;
+  AuthScreen(this.implementsUser);
 
-class _AuthScreenState extends State<AuthScreen> {
-  bool? _isLoggedIn;
-
->>>>>>> 8d097b9 (Commit from southsidepc-app branch wip-users.)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +68,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 onPressed: () => push(
                   context,
-                  new LoginScreen(),
+                  new LoginScreen(implementsUser),
                 ),
               ),
             ),
@@ -105,7 +99,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       fontWeight: FontWeight.bold,
                       color: Color(COLOR_PRIMARY)),
                 ),
-                onPressed: () => push(context, new SignUpScreen()),
+                onPressed: () =>
+                    push(context, new SignUpScreen(implementsUser)),
               ),
             ),
           )

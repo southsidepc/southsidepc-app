@@ -1,8 +1,14 @@
 import "package:flutter/material.dart";
 import "package:community_material_icon/community_material_icon.dart";
+//import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:move_to_background/move_to_background.dart';
 
-import 'package:southsidepc/src/ui/login_required.dart';
+//import 'package:southsidepc/instaflutter-login/ui/auth/authScreen.dart';
+
+//import 'package:southsidepc/src/ui/login_required.dart';
 //import 'package:southsidepc/src/models/user_state.dart';
+
+import 'package:southsidepc/login_required/login_required.dart';
 
 import "screens/home.dart";
 import "screens/event.dart";
@@ -11,6 +17,8 @@ import "screens/coffee.dart";
 import "screens/resources.dart";
 import "screens/connect.dart";
 import "screens/profile.dart";
+
+import 'package:southsidepc/src/models/user_state.dart';
 
 class Root extends StatelessWidget {
   @override
@@ -50,12 +58,11 @@ class Root extends StatelessWidget {
     return MaterialApp(
       title: 'Southside',
       routes: {
-        '/': (context) => LoginRequired(),
-        //LoginSignUp.routeName: (context) => LoginSignUp(),
-        NavUI.routeName: (context) => NavUI(),
-        Event.routeName: (context) => Event(),
+        ...LoginRequired.createRoutes(NavUI.routeName, NavUI(), UserState()),
+        ...{
+          Event.routeName: (context) => Event(),
+        }
       },
-      initialRoute: LoginRequired.routeName,
       theme: ThemeData(
         canvasColor: Colors.white,
         appBarTheme: AppBarTheme(
@@ -92,40 +99,17 @@ class Root extends StatelessWidget {
   }
 }
 
-/// class PageController
+/// class NavUI
 class NavUI extends StatefulWidget {
-  static const routeName = '/nav';
+  static const routeName = '/';
+  final bool autoLoginOnStartup = true;
 
   @override
   _NavUIState createState() => _NavUIState();
 }
 
-/// class _PageControllerState
-class _NavUIState extends State<NavUI> with WidgetsBindingObserver {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance!.addObserver(this);
-    print("Observer added.");
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
-    print("Observer removed.");
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    print("Observer noticed lifecycle state: $state");
-    if (state == AppLifecycleState.resumed) {
-      print("Going to dummy");
-      Navigator.pushNamed(context, Dummy.routeName);
-    }
-  }
-
+/// class _NavUI
+class _NavUIState extends State<NavUI> {
   /////////////////////////////////////////////////////////////////
   // const data: For each screen - label, widget, icon => navbar //
   /////////////////////////////////////////////////////////////////
@@ -137,13 +121,13 @@ class _NavUIState extends State<NavUI> with WidgetsBindingObserver {
     "Connect",
     "Profile",
   ];
-  final List<Widget> _screenWidgets = [
+  late List<Widget> _screenWidgets = [
     Home(),
     CheckIn(),
     Coffee(),
     Resources(),
     Connect(),
-    Profile(),
+    Profile(), //will be added below
   ];
   final List<Icon> _screenIcons = [
     Icon(CommunityMaterialIcons.home_outline),
@@ -181,11 +165,9 @@ class _NavUIState extends State<NavUI> with WidgetsBindingObserver {
     });
   }
 
-  /////////////
-  // build() //
-  /////////////
   @override
   Widget build(BuildContext context) {
+    // user is logged in: draw screen
     final appBars = _screenLabels
         .map<AppBar?>(
           (String str) => AppBar(
@@ -259,13 +241,4 @@ class _NavUIState extends State<NavUI> with WidgetsBindingObserver {
     
     _firebaseMessaging.subscribeToTopic('events');*/
   }*/
-}
-
-class Dummy extends StatelessWidget {
-  static const routeName = "/dummy";
-
-  @override
-  Widget build(BuildContext context) {
-    return CircularProgressIndicator();
-  }
 }

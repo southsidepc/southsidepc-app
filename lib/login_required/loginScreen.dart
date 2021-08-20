@@ -1,23 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:southsidepc/instaflutter-login/constants.dart';
-//import 'package:flutter_login_screen/main.dart';
-import 'package:southsidepc/instaflutter-login/model/user.dart';
-import 'package:southsidepc/instaflutter-login/services/authenticate.dart';
-import 'package:southsidepc/instaflutter-login/services/helper.dart';
-<<<<<<< HEAD
-=======
-import 'package:southsidepc/instaflutter-login/ui/auth/authScreen.dart';
->>>>>>> 8d097b9 (Commit from southsidepc-app branch wip-users.)
-//import 'package:flutter_login_screen/ui/home/homeScreen.dart';
 
-/* BEGIN MODIFIED */
-import 'package:southsidepc/src/ui/root.dart';
-/* END MODIFIED */
+import 'user_base.dart';
+import 'constants.dart';
+import 'authenticate.dart';
+import 'helper.dart';
 
 class LoginScreen extends StatefulWidget {
+  final UserBase defaultUserData;
+
+  LoginScreen(this.defaultUserData);
   @override
   State createState() {
     return _LoginScreen();
@@ -199,21 +190,17 @@ class _LoginScreen extends State<LoginScreen> {
 
   _loginWithEmailAndPassword() async {
     await showProgress(context, 'Logging in, please wait...', false);
-    dynamic result = await FireStoreUtils.loginWithEmailAndPassword(
-        email!.trim(), password!.trim());
+    var result = await FireStoreUtils.loginWithEmailAndPassword(
+        email!.trim(), password!.trim(), widget.defaultUserData);
     await hideProgress();
-    if (result != null && result is User) {
+    if (result != null && result is! String) {
+      
       /* BEGIN MODIFIED */
 
       //MyAppState.currentUser = result;
       //pushAndRemoveUntil(context, HomeScreen(user: result), false);
 
-<<<<<<< HEAD
-      pushAndRemoveUntil(context, NavUI(), false);
-=======
-      Navigator.popUntil(context, ModalRoute.withName(AuthScreen.routeName));
-      Navigator.pop(context, true); // returning non-null signals login success
->>>>>>> 8d097b9 (Commit from southsidepc-app branch wip-users.)
+      returnLoginSuccess(context, result);
 
       /* END MODIFIED */
     } else if (result != null && result is String) {
@@ -227,15 +214,16 @@ class _LoginScreen extends State<LoginScreen> {
   loginWithFacebook() async {
     try {
       await showProgress(context, 'Logging in, Please wait...', false);
-      dynamic result = await FireStoreUtils.loginWithFacebook();
+      dynamic result =
+          await FireStoreUtils.loginWithFacebook(widget.defaultUserData);
       await hideProgress();
-      if (result != null && result is User) {
+      if (result != null && result is! String) {
         /* BEGIN MODIFIED */
 
         //MyAppState.currentUser = result;
         //pushAndRemoveUntil(context, HomeScreen(user: result), false);
 
-        pushAndRemoveUntil(context, NavUI(), false);
+        returnLoginSuccess(context, result);
 
         /* END MODIFIED */
 
