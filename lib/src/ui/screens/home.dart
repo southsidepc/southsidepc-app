@@ -199,13 +199,15 @@ class Home extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
                         Theme.of(context).canvasColor,
                         Colors.transparent
-                      ])),
+                      ],
+                    ),
+                  ),
                   height: 250,
                 ),
               ),

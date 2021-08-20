@@ -19,6 +19,7 @@ class UserState extends UserBase {
     if (s == null) {
       return;
     }
+    this.notifications.clear();
     this.notifications.addAll(s.split(' '));
   }
 
@@ -29,8 +30,10 @@ class UserState extends UserBase {
       ...super.toJson(),
       ...{
         'phone': this.phone,
-        //'notifications': this.notifications.join(' '),
+        'notifications': this.notifications.join(' '),
       }
     };
   }
+
+  String get initials => this.name.split(' ').map((s) => s[0]).join();
 }

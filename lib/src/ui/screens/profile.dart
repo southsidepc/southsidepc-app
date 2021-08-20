@@ -5,65 +5,67 @@ import 'package:southsidepc/src/models/user_state.dart';
 
 import 'package:southsidepc/login_required/login_required.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  final List<String> _order = ['events', 'navigate'];
+  final List<bool> _checkBoxes = [true, true];
+
   @override
   Widget build(BuildContext context) {
     var user = LoginRequired.currentUser as UserState;
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            ElevatedButton(
-              child: Text("Logout"),
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-            ),
-            Text('Name: ${user.name}'),
-            Text('Email: ${user.email}'),
-            Text('Phone: ${user.phone}'),
-            Card(
-              child: Column(
-                children: [
-                  Text('Notifications'),
-                  ...user.notifications.map((e) => Text('- $e')).toList(),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _noUserView() {
-    return Form(
-      //key: _formKey,
+    return Padding(
+      padding: EdgeInsets.all(16),
       child: Column(
-        children: <Widget>[
-          Text("TODO: Login or create account form"),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            leading: CircleAvatar(child: Text(user.initials)),
+            title: Text(user.name),
+            subtitle: Text(user.email + '\n' + user.phone),
+            trailing: ElevatedButton(
+              child: Text("Edit"),
+              onPressed: () {},
+            ),
+          ),
+          Divider(),
+          Text(
+            'Notifications',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
+          ),
+          ...user.notifications.map((e) {
+            return Row(
+              children: [
+                Flexible(child: Text('- $e'), fit: FlexFit.tight),
+                Checkbox(
+                  value: _checkBoxes[_order.indexOf(e)],
+                  onChanged: (value) => setState(() {
+                    _checkBoxes[_order.indexOf(e)] = value!;
+                  }),
+                ),
+              ],
+            );
+          }), // map()
+          Divider(),
+          Expanded(
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: ElevatedButton(
+                child: Text("Logout"),
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                },
+              ),
+            ),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _yesUserView() {
-    return Row(
-      children: [
-        CircleAvatar(
-          child: Text('WB'),
-        ),
-        Expanded(
-          child: Column(
-            children: [
-              /*Text(user.name),
-              Text(user.email),
-              if (user.phone != null) Text(user.phone!),*/
-            ],
-          ),
-        )
-      ],
     );
   }
 }
