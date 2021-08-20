@@ -78,8 +78,8 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
   assets:
 
-    # instaflutter
-    - lib/instaflutter-login/assets/images/
+    # login_required
+    - lib/login_required/images/
 
     # southside
     - assets/SP001-Logo-Icon-White.png

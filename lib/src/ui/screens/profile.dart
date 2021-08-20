@@ -1,5 +1,3 @@
-//import 'package:community_material_icon/community_material_icon.dart';
-//import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -20,11 +18,19 @@ class Profile extends StatelessWidget {
               child: Text("Logout"),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
-                //setNavState(NavState.UserLoggedOut);
               },
             ),
-            Text(user.name),
-            Text(user.email),
+            Text('Name: ${user.name}'),
+            Text('Email: ${user.email}'),
+            Text('Phone: ${user.phone}'),
+            Card(
+              child: Column(
+                children: [
+                  Text('Notifications'),
+                  ...user.notifications.map((e) => Text('- $e')).toList(),
+                ],
+              ),
+            )
           ],
         ),
       ),

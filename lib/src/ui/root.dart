@@ -1,14 +1,8 @@
 import "package:flutter/material.dart";
 import "package:community_material_icon/community_material_icon.dart";
-//import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:move_to_background/move_to_background.dart';
-
-//import 'package:southsidepc/instaflutter-login/ui/auth/authScreen.dart';
-
-//import 'package:southsidepc/src/ui/login_required.dart';
-//import 'package:southsidepc/src/models/user_state.dart';
 
 import 'package:southsidepc/login_required/login_required.dart';
+import 'package:southsidepc/src/models/user_state.dart';
 
 import "screens/home.dart";
 import "screens/event.dart";
@@ -17,8 +11,6 @@ import "screens/coffee.dart";
 import "screens/resources.dart";
 import "screens/connect.dart";
 import "screens/profile.dart";
-
-import 'package:southsidepc/src/models/user_state.dart';
 
 class Root extends StatelessWidget {
   @override
@@ -125,7 +117,7 @@ class _NavUIState extends State<NavUI> {
     Coffee(),
     Resources(),
     Connect(),
-    Profile(), //will be added below
+    Profile(),
   ];
   final List<Icon> _screenIcons = [
     Icon(CommunityMaterialIcons.home_outline),
@@ -135,12 +127,13 @@ class _NavUIState extends State<NavUI> {
     Icon(CommunityMaterialIcons.account_outline),
   ];
   final List<BottomNavigationBarItem> _screenNavBars = [];
+  late List<AppBar?> _appBars;
 
-  /// _PageControllerState()
+  /// _NavUIState()
   _NavUIState() {
     const numScreens = 5;
 
-    // navbars
+    // _screenNavBars
     for (var i = 0; i < numScreens; ++i) {
       _screenNavBars.add(
         BottomNavigationBarItem(
@@ -149,6 +142,21 @@ class _NavUIState extends State<NavUI> {
         ),
       );
     }
+
+    // appBars
+    _appBars = _screenLabels
+        .map<AppBar?>(
+          (String str) => AppBar(
+            title: Text(
+              str,
+              //style: TextStyle(
+              //color: Theme.of(context).textTheme.bodyText1?.color),
+            ),
+            //centerTitle: true,
+          ),
+        )
+        .toList();
+    _appBars.first = null; // firs
   }
 
   /////////////////////////////////
@@ -156,36 +164,19 @@ class _NavUIState extends State<NavUI> {
   /////////////////////////////////
   int _selectedIndex = 0;
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // user is logged in: draw screen
-    final appBars = _screenLabels
-        .map<AppBar?>(
-          (String str) => AppBar(
-            title: Text(
-              str,
-              style: TextStyle(
-                  color: Theme.of(context).textTheme.bodyText1?.color),
-            ),
-            //centerTitle: true,
-          ),
-        )
-        .toList();
-    appBars.first = null; // first tab has no AppBar
-
     return Scaffold(
-      appBar: appBars.elementAt(_selectedIndex),
+      appBar: _appBars.elementAt(_selectedIndex),
       body: _screenWidgets.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: _screenNavBars,
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         type: BottomNavigationBarType.fixed,
       ),
     );

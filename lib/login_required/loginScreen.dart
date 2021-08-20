@@ -152,7 +152,7 @@ class _LoginScreen extends State<LoginScreen> {
                   icon: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Image.asset(
-                      'lib/instaflutter-login/assets/images/facebook_logo.png',
+                      'lib/login_required/images/facebook_logo.png',
                       color: Colors.white,
                       height: 30,
                       width: 30,
@@ -194,7 +194,6 @@ class _LoginScreen extends State<LoginScreen> {
         email!.trim(), password!.trim(), widget.defaultUserData);
     await hideProgress();
     if (result != null && result is! String) {
-      
       /* BEGIN MODIFIED */
 
       //MyAppState.currentUser = result;

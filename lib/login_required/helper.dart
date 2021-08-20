@@ -151,7 +151,7 @@ Widget _getPlaceholderOrErrorImage(double size, hasBorder) => Container(
       ),
       child: ClipOval(
           child: Image.asset(
-        'assets/images/placeholder.jpg',
+        'login_required/images/placeholder.jpg',
         fit: BoxFit.cover,
         height: size,
         width: size,
