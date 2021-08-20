@@ -46,7 +46,7 @@ class LoginRequired<T extends UserBase> extends StatefulWidget {
 }
 
 class _LoginRequiredState<T extends UserBase> extends State<LoginRequired<T>>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, ChangeNotifier {
   @override
   void initState() {
     super.initState();
