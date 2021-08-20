@@ -5,7 +5,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:math';
 
 class CheckIn extends StatefulWidget {
-  CheckIn({Key? key}) : super(key: key);
+  CheckIn({Key key}) : super(key: key);
 
   @override
   CheckInState createState() => CheckInState();
@@ -13,8 +13,8 @@ class CheckIn extends StatefulWidget {
 
 class CheckInState extends State<CheckIn> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode? result;
-  QRViewController? controller;
+  Barcode result;
+  QRViewController controller;
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -22,9 +22,9 @@ class CheckInState extends State<CheckIn> {
   void reassemble() {
     super.reassemble();
     if (Platform.isAndroid) {
-      controller?.pauseCamera();
+      controller.pauseCamera();
     } else if (Platform.isIOS) {
-      controller?.resumeCamera();
+      controller.resumeCamera();
     }
   }
 
@@ -48,7 +48,7 @@ class CheckInState extends State<CheckIn> {
     if (result != null) {
       return Container(
         child: Center(
-          child: Text(result!.code),
+          child: Text(result.code),
         ),
       );
     }
@@ -62,9 +62,7 @@ class CheckInState extends State<CheckIn> {
             borderRadius: 10,
             borderLength: 30,
             borderWidth: 10,
-            cutOutSize: min(MediaQuery.of(context).size.width,
-                    MediaQuery.of(context).size.height) *
-                0.75),
+            cutOutSize: min(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height) * 0.75),
       ),
     );
   }
