@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import "package:flutter/widgets.dart";
 import 'package:intl/intl.dart';
+import 'package:southsidepc/login_required/login_required.dart';
+import 'package:southsidepc/src/models/user_state.dart';
 
 class Coffee extends StatefulWidget {
   Coffee({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class Coffee extends StatefulWidget {
 }
 
 class CoffeeState extends State<Coffee> {
+  var user = LoginRequired.currentUser as UserState;
   final _formKey = GlobalKey<FormState>();
 
   bool _loading = false;
@@ -45,13 +48,13 @@ class CoffeeState extends State<Coffee> {
   String _milk = 'Full Cream';
 
   final _services =
-      <String>['8:30 am', '10 am'].map<DropdownMenuItem<String>>((value) {
+      <String>['9 am'].map<DropdownMenuItem<String>>((value) {
     return DropdownMenuItem<String>(
       value: value,
       child: Text(value),
     );
   }).toList();
-  String _service = '8:30 am';
+  String _service = '9 am';
 
   DateTime _serviceDate = DateTime.now();
 
@@ -66,9 +69,9 @@ class CoffeeState extends State<Coffee> {
     _serviceDateController.text =
         new DateFormat('d MMM yyyy').format(_serviceDate);
 
-    if (_serviceDate.hour >= 10) {
-      _service = '10 am';
-    }
+    _service = "9 am";
+
+    _nameController.text = user.name;
   }
 
   @override

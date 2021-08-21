@@ -115,7 +115,6 @@ class _NavUIState extends State<NavUI> {
   /////////////////////////////////////////////////////////////////
   final List<String> _screenLabels = [
     "Home",
-    "Check in",
     "Coffee",
     "Media",
     "Connect",
@@ -123,7 +122,6 @@ class _NavUIState extends State<NavUI> {
   ];
   late List<Widget> _screenWidgets = [
     Home(),
-    CheckIn(),
     Coffee(),
     Resources(),
     Connect(),
@@ -131,7 +129,6 @@ class _NavUIState extends State<NavUI> {
   ];
   final List<Icon> _screenIcons = [
     Icon(CommunityMaterialIcons.home_outline),
-    Icon(CommunityMaterialIcons.qrcode),
     Icon(CommunityMaterialIcons.coffee_outline),
     Icon(CommunityMaterialIcons.music_note_outline),
     Icon(CommunityMaterialIcons.link_box_outline),
@@ -141,7 +138,7 @@ class _NavUIState extends State<NavUI> {
 
   /// _PageControllerState()
   _NavUIState() {
-    const numScreens = 6;
+    const numScreens = 5;
 
     // navbars
     for (var i = 0; i < numScreens; ++i) {
