@@ -44,7 +44,7 @@ class Event extends StatelessWidget {
         if (dbEntry == null) {
           return _dbError();
         }
-        var eventData = EventData.fromDB(dbEntry);
+        var eventData = DevotionData.fromDB(dbEntry);
 
         double? height;
         if (eventData.imageName != '') {
@@ -193,7 +193,7 @@ class EventArguments {
   EventArguments(this.eventId);
 }
 
-class EventData {
+class DevotionData {
   String imageName;
   String link;
   String date;
@@ -201,10 +201,10 @@ class EventData {
   String image;
   String content;
 
-  EventData(this.imageName, this.link, this.date, this.title, this.image,
+  DevotionData(this.imageName, this.link, this.date, this.title, this.image,
       this.content);
 
-  EventData.fromDB(Map<String, dynamic> dbEntry)
+  DevotionData.fromDB(Map<String, dynamic> dbEntry)
       : imageName = dbEntry["imageName"],
         link = dbEntry["link"],
         date = dbEntry["date"],
