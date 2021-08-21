@@ -94,7 +94,6 @@ class Root extends StatelessWidget {
 /// class NavUI
 class NavUI extends StatefulWidget {
   static const routeName = '/';
-  final bool autoLoginOnStartup = true;
 
   @override
   _NavUIState createState() => _NavUIState();
@@ -112,7 +111,7 @@ class _NavUIState extends State<NavUI> {
     "Connect",
     "Profile",
   ];
-  late List<Widget> _screenWidgets = [
+  final List<Widget> _screenWidgets = [
     Home(),
     Coffee(),
     Resources(),
@@ -127,7 +126,6 @@ class _NavUIState extends State<NavUI> {
     Icon(CommunityMaterialIcons.account_outline),
   ];
   final List<BottomNavigationBarItem> _screenNavBars = [];
-  late List<AppBar?> _appBars;
 
   /// _NavUIState()
   _NavUIState() {
@@ -142,21 +140,6 @@ class _NavUIState extends State<NavUI> {
         ),
       );
     }
-
-    // appBars
-    _appBars = _screenLabels
-        .map<AppBar?>(
-          (String str) => AppBar(
-            title: Text(
-              str,
-              //style: TextStyle(
-              //color: Theme.of(context).textTheme.bodyText1?.color),
-            ),
-            //centerTitle: true,
-          ),
-        )
-        .toList();
-    _appBars.first = null; // firs
   }
 
   /////////////////////////////////
@@ -167,7 +150,17 @@ class _NavUIState extends State<NavUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBars.elementAt(_selectedIndex),
+      appBar: _selectedIndex == 0
+          ? null
+          : AppBar(
+              title: Text(
+                _screenLabels.elementAt(_selectedIndex),
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyText1?.color,
+                ),
+              ),
+              //centerTitle: true,
+            ),
       body: _screenWidgets.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: _screenNavBars,
