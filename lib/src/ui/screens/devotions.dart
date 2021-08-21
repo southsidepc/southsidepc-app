@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:intl/intl.dart';
-import "package:southsidepc/src/ui/screens/event.dart";
+
+import "package:southsidepc/src/ui/screens/devotion.dart";
 
 class DevotionData {
   String imageName;
@@ -11,17 +12,24 @@ class DevotionData {
   String title;
   String image;
   String content;
+  String id;
 
-  DevotionData(this.imageName, this.link, this.date, this.title, this.image,
-      this.content);
-
-  DevotionData.fromDB(Map<String, dynamic> dbEntry)
+  DevotionData.fromDB(Map<String, dynamic> dbEntry, {String id = ""})
       : imageName = dbEntry["imageName"],
         link = dbEntry["link"],
         date = dbEntry["date"],
         title = dbEntry["title"],
         image = dbEntry["image"],
-        content = dbEntry["content"];
+        content = dbEntry["content"],
+        id = id;
+
+  DateTime toLocalDateTime() {
+    return DateFormat("yyyy-MM-ddTHH:mm:ssZ").parse(date, true).toLocal();
+  }
+
+  String toMonthYear() {
+    return DateFormat("MMMM yyyy").format(toLocalDateTime());
+  }
 }
 
 class Devotions extends StatefulWidget {
@@ -172,15 +180,16 @@ class _Devotions extends State<Devotions> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     onTap: () {
-                      Navigator.pushNamed(
+                      Navigator.push(
                         context,
-                        Event.routeName,
-                        arguments: EventArguments(devotion.id),
+                        MaterialPageRoute(
+                          builder: (context) => Devotion(devotion.id),
+                        ),
                       );
                     },
                   );
                 },
-                childCount: month._events.length,
+                childCount: month._devotions.length,
               ),
             ),
           ),

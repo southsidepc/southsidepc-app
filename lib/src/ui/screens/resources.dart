@@ -1,8 +1,8 @@
-//import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-//import 'package:intl/intl.dart';
 import 'package:community_material_icon/community_material_icon.dart';
+
+import 'package:southsidepc/src/ui/screens/devotions.dart';
 
 const Color spotifyGreen = Color(0xFF1DB954);
 
@@ -60,19 +60,25 @@ class Resources extends StatelessWidget {
               child: Container(),
             ),
             OutlinedButton.icon(
-              onPressed: () async {
+              /*onPressed: () async {
                 String url =
                     'https://open.spotify.com/show/0PRkJlUMpq0dhBoUMhFsyQ';
 
                 if (await canLaunch(url)) {
                   await launch(url);
                 }
-              },
+              },*/
+              label: Text('Open in Spotify'),
               icon: Icon(
                 CommunityMaterialIcons.spotify,
                 color: spotifyGreen,
               ),
-              label: Text('Open in Spotify'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Devotions()),
+                );
+              },
               //highlightedBorderColor: spotifyGreen,
             ),
             SizedBox(

@@ -3,25 +3,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Event extends StatelessWidget {
-  Event({Key? key}) : super(key: key);
-  static const routeName = '/events';
+import 'package:southsidepc/src/ui/screens/devotions.dart';
+
+class Devotion extends StatelessWidget {
+  static const routeName = '/devotion';
+  final String id;
+
+  Devotion(this.id, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
-    final EventArguments args =
-        ModalRoute.of(context)?.settings.arguments as EventArguments;
+    DocumentReference<Map<String, dynamic>> devotion =
+        FirebaseFirestore.instance.collection('devotions').doc(id);
 
-    DocumentReference<Map<String, dynamic>> event =
-        FirebaseFirestore.instance.collection('events').doc(args.eventId);
-
-    return //StreamBuilder<DocumentSnapshot<EventData>>(
-        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      stream: event.snapshots(),
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+      stream: devotion.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Scaffold(
             appBar: AppBar(
-              title: Text("Event Error"),
+              title: Text("Devotion Error"),
             ),
             body: Center(
               child: Text(snapshot.error.toString()),
@@ -32,7 +32,7 @@ class Event extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             appBar: AppBar(
-              title: Text("Loading Event"),
+              title: Text("Loading Devotion"),
             ),
             body: Center(
               child: CircularProgressIndicator(),
@@ -44,15 +44,15 @@ class Event extends StatelessWidget {
         if (dbEntry == null) {
           return _dbError();
         }
-        var eventData = EventData.fromDB(dbEntry);
+        var devotionData = DevotionData.fromDB(dbEntry);
 
         double? height;
-        if (eventData.imageName != '') {
+        if (devotionData.imageName != '') {
           height = 250;
         }
 
         Widget? bottomSheet;
-        if (eventData.link != '') {
+        if (devotionData.link != '') {
           bottomSheet = Container(
             height: 50,
             color: Colors.transparent,
@@ -67,7 +67,7 @@ class Event extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   onPressed: () {
-                    launch(eventData.link);
+                    launch(devotionData.link);
                   },
                   child: Text("Visit Website"),
                 ),
@@ -77,7 +77,7 @@ class Event extends StatelessWidget {
         }
 
         DateTime date = DateFormat("yyyy-MM-ddTHH:mm:ssZ")
-            .parse(eventData.date, true)
+            .parse(devotionData.date, true)
             .toLocal();
         var formattedDate = DateFormat('d MMMM yyyy').format(date);
 
@@ -93,7 +93,7 @@ class Event extends StatelessWidget {
                 expandedHeight: height,
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(
-                    eventData.title,
+                    devotionData.title,
                     style: TextStyle(
                         color: Theme.of(context).textTheme.bodyText1?.color),
                   ),
@@ -102,7 +102,7 @@ class Event extends StatelessWidget {
                       fit: StackFit.expand,
                       children: [
                         Image.network(
-                          eventData.image,
+                          devotionData.image,
                           fit: BoxFit.cover,
                         ),
                         Align(
@@ -162,7 +162,7 @@ class Event extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 16, right: 16),
-                        child: Text(eventData.content),
+                        child: Text(devotionData.content),
                       ),
                     ],
                   ),
@@ -185,30 +185,4 @@ class Event extends StatelessWidget {
       ),
     );
   }
-}
-
-class EventArguments {
-  final String eventId;
-
-  EventArguments(this.eventId);
-}
-
-class EventData {
-  String imageName;
-  String link;
-  String date;
-  String title;
-  String image;
-  String content;
-
-  EventData(this.imageName, this.link, this.date, this.title, this.image,
-      this.content);
-
-  EventData.fromDB(Map<String, dynamic> dbEntry)
-      : imageName = dbEntry["imageName"],
-        link = dbEntry["link"],
-        date = dbEntry["date"],
-        title = dbEntry["title"],
-        image = dbEntry["image"],
-        content = dbEntry["content"];
 }
