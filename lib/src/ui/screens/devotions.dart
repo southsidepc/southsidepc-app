@@ -6,22 +6,26 @@ import 'package:intl/intl.dart';
 import "package:southsidepc/src/ui/screens/devotion.dart";
 
 class DevotionData {
-  String imageName;
-  String link;
-  String date;
-  String title;
-  String image;
-  String content;
-  String id;
+  String id; // Firebase key
+  String title; // Title of devotion
+  String date; // Date of devotion
+  String verseText; // Verse for devotion, e.g., 'John 3:16-17'
+  String verseURL; // URL for above verse in online Bible
+  String listenURL; // URL for podcast
+  String prayerPoints; // list of prayer points
+  String imageName; // filename of background image?
+  String imageURL; // URL for background image
 
   DevotionData.fromDB(Map<String, dynamic> dbEntry, {String id = ""})
-      : imageName = dbEntry["imageName"],
-        link = dbEntry["link"],
-        date = dbEntry["date"],
-        title = dbEntry["title"],
-        image = dbEntry["image"],
-        content = dbEntry["content"],
-        id = id;
+      : id = id,
+        title = dbEntry['title'],
+        date = dbEntry['date'],
+        verseText = dbEntry['verseText'],
+        verseURL = dbEntry['verseURL'],
+        listenURL = dbEntry['listenURL'],
+        prayerPoints = dbEntry['prayerPoints'],
+        imageName = dbEntry['imageName'],
+        imageURL = dbEntry['imageURL'];
 
   DateTime toLocalDateTime() {
     return DateFormat("yyyy-MM-ddTHH:mm:ssZ").parse(date, true).toLocal();
@@ -176,7 +180,7 @@ class _Devotions extends State<Devotions> {
                     ),
                     title: Text(devotion.title),
                     subtitle: Text(
-                      devotion.content.replaceAll("\n", " "),
+                      devotion.title,
                       overflow: TextOverflow.ellipsis,
                     ),
                     onTap: () {
@@ -196,60 +200,6 @@ class _Devotions extends State<Devotions> {
         );
       },
     );
-  }
-
-  /// _getDateFromEvent()
-  DateTime _getDateFromEvent(Map<String, dynamic> event) =>
-      DateFormat("yyyy-MM-ddTHH:mm:ssZ").parse(event['date'], true).toLocal();
-
-  /// _getHeaderByMonth()
-  ///  - Given a list of events catalogued by month (as SliverStickyHeaders),
-  ///    gets (creating if necessary) the SliverStickyHeader corresponding to
-  ///    the month of the supplied event.
-  ///  - (A BuildContext is needed to create the SliverStickyHeader.)
-  SliverStickyHeader _getHeaderByMonth(List<SliverStickyHeader> eventsByMonth,
-      Map<String, dynamic> event, DateTime date, BuildContext context) {
-    var monthYear = DateFormat("MMMM yyyy").format(date);
-    return eventsByMonth.firstWhere(
-      (month) {
-        var header = month.header;
-        if (header == null) return false;
-        if (header is! Container) return false;
-        var child = header.child;
-        if (child == null) return false;
-        if (child is! Text) return false;
-        return child.data == monthYear;
-      },
-      // header not found; create
-      orElse: () => _makeHeaderFromDate(eventsByMonth, monthYear, context),
-    );
-  }
-
-  /// _makeHeaderFromDate()
-  /// - creates a SliverSitckyHeader corresponding to the given date,
-  ///   adds this to the list of events, then returns the header
-  SliverStickyHeader _makeHeaderFromDate(List<SliverStickyHeader> eventsByMonth,
-      String date, BuildContext context) {
-    var header = SliverStickyHeader(
-      header: Container(
-        height: 40.0,
-        color: Theme.of(context).canvasColor,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          date,
-          style: TextStyle(color: Theme.of(context).textTheme.subtitle1?.color),
-        ),
-      ),
-      sliver: SliverList(
-        delegate: SliverChildListDelegate(
-          <Widget>[],
-        ),
-      ),
-    );
-
-    eventsByMonth.add(header);
-    return header;
   }
 
   SliverAppBar _makeHomeAppBar(BuildContext context) {

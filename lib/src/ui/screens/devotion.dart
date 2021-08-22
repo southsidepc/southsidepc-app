@@ -52,7 +52,7 @@ class Devotion extends StatelessWidget {
         }
 
         Widget? bottomSheet;
-        if (devotionData.link != '') {
+        /*if (devotionData.link != '') {
           bottomSheet = Container(
             height: 50,
             color: Colors.transparent,
@@ -74,7 +74,7 @@ class Devotion extends StatelessWidget {
               ),
             ),
           );
-        }
+        }*/
 
         DateTime date = DateFormat("yyyy-MM-ddTHH:mm:ssZ")
             .parse(devotionData.date, true)
@@ -92,6 +92,9 @@ class Devotion extends StatelessWidget {
                 ),
                 expandedHeight: height,
                 flexibleSpace: FlexibleSpaceBar(
+                  ///////////
+                  // title //
+                  ///////////
                   title: Text(
                     devotionData.title,
                     style: TextStyle(
@@ -101,8 +104,11 @@ class Devotion extends StatelessWidget {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
+                        //////////////////////
+                        // background image //
+                        //////////////////////
                         Image.network(
-                          devotionData.image,
+                          devotionData.imageURL,
                           fit: BoxFit.cover,
                         ),
                         Align(
@@ -150,6 +156,9 @@ class Devotion extends StatelessWidget {
                     [
                       Padding(
                         padding: EdgeInsets.only(left: 16, right: 16),
+                        //////////
+                        // date //
+                        //////////
                         child: Text(
                           formattedDate,
                           style: Theme.of(context).textTheme.headline5,
@@ -160,9 +169,12 @@ class Devotion extends StatelessWidget {
                             left: 16, right: 16, top: 8, bottom: 8),
                         child: Divider(),
                       ),
+                      ///////////////
+                      // verseText //
+                      ///////////////
                       Padding(
                         padding: EdgeInsets.only(left: 16, right: 16),
-                        child: Text(devotionData.content),
+                        child: Text(devotionData.verseText),
                       ),
                     ],
                   ),
