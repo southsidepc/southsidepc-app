@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:intl/intl.dart';
+
+import 'package:southsidepc/src/models/event_data.dart';
+
 import "event.dart";
 
 class Home extends StatelessWidget {
@@ -108,10 +111,9 @@ class Home extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             onTap: () {
-              Navigator.pushNamed(
+              Navigator.push(
                 context,
-                Event.routeName,
-                arguments: EventArguments(document.id),
+                MaterialPageRoute(builder: (context) => Event(document.id)),
               );
             },
           ),

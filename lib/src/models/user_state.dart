@@ -25,9 +25,10 @@ class UserState extends UserBase {
 
   @override
   Map<String, dynamic> toJson() {
-    // super
     return {
+      // super: UserBase
       ...super.toJson(),
+      // this: UserState
       ...{
         'phone': this.phone,
         'notifications': this.notifications.join(' '),

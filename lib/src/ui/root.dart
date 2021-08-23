@@ -5,10 +5,9 @@ import 'package:southsidepc/login_required/login_required.dart';
 import 'package:southsidepc/src/models/user_state.dart';
 
 import "screens/home.dart";
-import "screens/event.dart";
-import "screens/checkIn.dart";
+//import "screens/event.dart";
 import "screens/coffee.dart";
-import "screens/resources.dart";
+import 'screens/media.dart';
 import "screens/connect.dart";
 import "screens/profile.dart";
 
@@ -52,7 +51,7 @@ class Root extends StatelessWidget {
       routes: {
         ...LoginRequired.createRoutes(NavUI.routeName, NavUI(), UserState()),
         ...{
-          Event.routeName: (context) => Event(),
+          //Event.routeName: (context) => Event(),
         }
       },
       theme: ThemeData(
@@ -114,7 +113,7 @@ class _NavUIState extends State<NavUI> {
   final List<Widget> _screenWidgets = [
     Home(),
     Coffee(),
-    Resources(),
+    Media(),
     Connect(),
     Profile(),
   ];

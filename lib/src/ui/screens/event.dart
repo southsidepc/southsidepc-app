@@ -3,16 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:southsidepc/src/models/event_data.dart';
+
 class Event extends StatelessWidget {
-  Event({Key? key}) : super(key: key);
   static const routeName = '/events';
+  final String eventID;
+
+  const Event(this.eventID, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
-    final EventArguments args =
-        ModalRoute.of(context)?.settings.arguments as EventArguments;
-
     DocumentReference<Map<String, dynamic>> event =
-        FirebaseFirestore.instance.collection('events').doc(args.eventId);
+        FirebaseFirestore.instance.collection('events').doc(eventID);
 
     return //StreamBuilder<DocumentSnapshot<EventData>>(
         StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
@@ -185,30 +186,4 @@ class Event extends StatelessWidget {
       ),
     );
   }
-}
-
-class EventArguments {
-  final String eventId;
-
-  EventArguments(this.eventId);
-}
-
-class EventData {
-  String imageName;
-  String link;
-  String date;
-  String title;
-  String image;
-  String content;
-
-  EventData(this.imageName, this.link, this.date, this.title, this.image,
-      this.content);
-
-  EventData.fromDB(Map<String, dynamic> dbEntry)
-      : imageName = dbEntry["imageName"],
-        link = dbEntry["link"],
-        date = dbEntry["date"],
-        title = dbEntry["title"],
-        image = dbEntry["image"],
-        content = dbEntry["content"];
 }

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:southsidepc/src/ui/screens/devotions.dart';
+import 'package:southsidepc/src/models/devotion_data.dart';
 
 class Devotion extends StatelessWidget {
   static const routeName = '/devotion';

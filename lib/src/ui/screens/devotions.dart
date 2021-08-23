@@ -1,62 +1,24 @@
+// external imports
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:intl/intl.dart';
 
-import "package:southsidepc/src/ui/screens/devotion.dart";
+// internal imports: models
+import 'package:southsidepc/src/models/devotion_data.dart';
 
-class DevotionData {
-  String id; // Firebase key
-  String title; // Title of devotion
-  String date; // Date of devotion
-  String verseText; // Verse for devotion, e.g., 'John 3:16-17'
-  String verseURL; // URL for above verse in online Bible
-  String listenURL; // URL for podcast
-  String prayerPoints; // list of prayer points
-  String imageName; // filename of background image?
-  String imageURL; // URL for background image
-
-  DevotionData.fromDB(Map<String, dynamic> dbEntry, {String id = ""})
-      : id = id,
-        title = dbEntry['title'],
-        date = dbEntry['date'],
-        verseText = dbEntry['verseText'],
-        verseURL = dbEntry['verseURL'],
-        listenURL = dbEntry['listenURL'],
-        prayerPoints = dbEntry['prayerPoints'],
-        imageName = dbEntry['imageName'],
-        imageURL = dbEntry['imageURL'];
-
-  DateTime toLocalDateTime() {
-    return DateFormat("yyyy-MM-ddTHH:mm:ssZ").parse(date, true).toLocal();
-  }
-
-  String toMonthYear() {
-    return DateFormat("MMMM yyyy").format(toLocalDateTime());
-  }
-}
+// internal imports: screens
+import 'devotion.dart';
 
 class Devotions extends StatefulWidget {
   @override
   _Devotions createState() => _Devotions();
 }
 
-class MonthOfDevotions {
-  final List<DevotionData> _devotions = [];
-  final String monthYear;
-
-  MonthOfDevotions(this.monthYear);
-
-  void addDevotion(DevotionData devotion) {
-    _devotions.add(devotion);
-  }
-}
-
 class _Devotions extends State<Devotions> {
-  Query<Map<String, dynamic>> _incomingEvents = FirebaseFirestore.instance
+  Query<Map<String, dynamic>> _incomingDevotions = FirebaseFirestore.instance
       .collection('devotions')
-      .orderBy('date', descending: true)
-      .where('published', isEqualTo: true);
+      .orderBy('date', descending: true);
+  //.where('published', isEqualTo: true);
 
   List<MonthOfDevotions> _devotionsByMonth = [];
   List<SliverStickyHeader> _headers = [];
@@ -64,7 +26,7 @@ class _Devotions extends State<Devotions> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _incomingEvents.snapshots(),
+      stream: _incomingDevotions.snapshots(),
       builder: (context, snapshot) {
         // this builder turns the snapshot into a List of slivers (as Widgets)
         // wrapped in a CustomScrollView
@@ -122,8 +84,10 @@ class _Devotions extends State<Devotions> {
         }
 
         // make CustomScrollView
-        return CustomScrollView(
-          slivers: slivers,
+        return Scaffold(
+          body: CustomScrollView(
+            slivers: slivers,
+          ),
         );
       }, // builder:
     );
@@ -172,7 +136,7 @@ class _Devotions extends State<Devotions> {
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  final devotion = month._devotions.elementAt(index);
+                  final devotion = month.devotions.elementAt(index);
                   final date = devotion.toLocalDateTime();
                   return ListTile(
                     leading: CircleAvatar(
@@ -193,7 +157,7 @@ class _Devotions extends State<Devotions> {
                     },
                   );
                 },
-                childCount: month._devotions.length,
+                childCount: month.devotions.length,
               ),
             ),
           ),

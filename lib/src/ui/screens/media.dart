@@ -10,7 +10,7 @@ const Color soundcloudOrange = Color(0xFFFE5000);
 
 const Color googleYellow = Color(0xFFFBBC05);
 
-class Resources extends StatelessWidget {
+class Media extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -68,7 +68,7 @@ class Resources extends StatelessWidget {
                   await launch(url);
                 }
               },*/
-              label: Text('Open in Spotify'),
+              label: Text('Select a devotion ...'),
               icon: Icon(
                 CommunityMaterialIcons.spotify,
                 color: spotifyGreen,
