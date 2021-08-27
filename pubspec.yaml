@@ -35,7 +35,9 @@ dependencies:
   community_material_icon: ^5.9.55
   flutter_sticky_header: ^0.6.0
   cupertino_setting_control: ^1.0.2
-  qr_code_scanner: ^0.5.1
+  flutter_sound_lite: ^8.3.9
+  #flutter_sound: ^8.3.9
+
 
 dev_dependencies:
 
