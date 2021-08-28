@@ -13,14 +13,14 @@ class DevotionData {
 
   DevotionData.fromDB(Map<String, dynamic> dbEntry, {String id = ""})
       : id = id,
-        title = dbEntry['title'],
-        date = dbEntry['date'],
-        verseText = dbEntry['verseText'],
-        verseURL = dbEntry['verseURL'],
-        listenURL = dbEntry['listenURL'],
-        prayerPoints = dbEntry['prayerPoints'],
-        imageName = dbEntry['imageName'],
-        imageURL = dbEntry['imageURL'];
+        title = dbEntry['title'] ?? '',
+        date = dbEntry['date'] ?? '',
+        verseText = dbEntry['verseText'] ?? '',
+        verseURL = dbEntry['verseURL'] ?? '',
+        listenURL = dbEntry['listenURL'] ?? '',
+        prayerPoints = dbEntry['prayerPoints'] ?? '',
+        imageName = dbEntry['imageName'] ?? '',
+        imageURL = dbEntry['imageURL'] ?? '';
 
   DateTime toLocalDateTime() {
     return DateFormat("yyyy-MM-ddTHH:mm:ssZ").parse(date, true).toLocal();

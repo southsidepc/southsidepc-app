@@ -1,24 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_sound_lite/flutter_sound.dart';
-import 'package:flutter_sound_lite/public/ui/sound_recorder_ui.dart';
 
-import 'package:flutter_sound_lite/flutter_sound.dart';
-import 'package:flutter_sound_lite/public/flutter_sound_player.dart';
-import 'package:flutter_sound_lite/public/flutter_sound_recorder.dart';
-import 'package:flutter_sound_lite/public/tau.dart';
-import 'package:flutter_sound_lite/public/ui/recorder_playback_controller.dart';
-import 'package:flutter_sound_lite/public/ui/sound_player_ui.dart';
-import 'package:flutter_sound_lite/public/ui/sound_recorder_ui.dart';
-import 'package:flutter_sound_lite/public/util/enum_helper.dart';
-import 'package:flutter_sound_lite/public/util/flutter_sound_ffmpeg.dart';
-import 'package:flutter_sound_lite/public/util/flutter_sound_helper.dart';
-import 'package:flutter_sound_lite/public/util/temp_file_system.dart';
-import 'package:flutter_sound_lite/public/util/wave_header.dart';
-
+import 'package:southsidepc/src/ui/widgets/podcast_player.dart';
 import 'package:southsidepc/src/models/devotion_data.dart';
 
 class Devotion extends StatefulWidget {
@@ -32,53 +15,8 @@ class Devotion extends StatefulWidget {
 }
 
 class _DevotionState extends State<Devotion> {
-  final FlutterSoundPlayer _player = FlutterSoundPlayer();
   final String mp3File =
       "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
-
-  late Track track;
-  _DevotionState() {
-    //_player.openAudioSession(withUI: true);
-    //_player.onProgress?.listen((e) => _onProgress(e));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    track = Track.fromAsset('assets/rock.mp3', mediaFormat: Mp3MediaFormat());
-  }
-
-  @override
-  void dispose() {
-    //_player.closeAudioSession();
-    super.dispose();
-  }
-
-  void _onProgress(PlaybackDisposition e) {
-    print('Position = ${e.position}');
-  }
-
-  Future<void> _onPressed() async {
-    if (_player.isPaused) {
-      await _player.startPlayer(fromURI: mp3File, codec: Codec.mp3);
-    } else if (_player.isPlaying) {
-      await _player.stopPlayer();
-    } else {
-      // isStopped
-      await _player.startPlayer(fromURI: mp3File, codec: Codec.mp3);
-    }
-    setState(() {});
-  }
-
-  Widget _getIcon() {
-    if (_player.isPaused) {
-      return Icon(Icons.pause);
-    } else if (_player.isPlaying) {
-      return Icon(Icons.stop);
-    } else {
-      return Icon(Icons.play_arrow);
-    }
-  }
 
   Widget build(BuildContext context) {
     DocumentReference<Map<String, dynamic>> devotion =
@@ -124,9 +62,7 @@ class _DevotionState extends State<Devotion> {
           body: Center(
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 30.0),
-              child: SoundPlayerUI.fromLoader(
-                (context) async => Track(trackPath: mp3File),
-              ),
+              child: PodcastPlayer(url: mp3File),
             ),
             /*IconButton(
               icon: _getIcon(),

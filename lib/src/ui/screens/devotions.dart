@@ -93,10 +93,7 @@ class _Devotions extends State<Devotions> {
     );
   }
 
-  void _addDevotion(
-    Map<String, dynamic> dbEvent,
-    String id,
-  ) {
+  void _addDevotion(Map<String, dynamic> dbEvent, String id) {
     final devotion = DevotionData.fromDB(dbEvent, id: id);
     final monthYear = devotion.toMonthYear();
 

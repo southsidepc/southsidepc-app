@@ -35,8 +35,12 @@ dependencies:
   community_material_icon: ^5.9.55
   flutter_sticky_header: ^0.6.0
   cupertino_setting_control: ^1.0.2
-  flutter_sound_lite: ^8.3.9
+  #sounds: ^0.9.3
+  #flutter_sound_lite: ^8.3.9
   #flutter_sound: ^8.3.9
+  #audioplayer: 0.8.1
+  audioplayers: ^0.19.1
+
 
 
 dev_dependencies:
