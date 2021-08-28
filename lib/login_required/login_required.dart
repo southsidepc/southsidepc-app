@@ -85,7 +85,7 @@ class _LoginRequiredState<T extends UserBase> extends State<LoginRequired<T>>
     print("Observer added.");
     _printNavState();
     FirebaseAuth.instance.userChanges().listen((user) {
-      print("I heard about a user change ...");
+      print("Did this happen first? I heard about a user change ...");
       print("$user");
       if (user == null) {
         print("User is null");
@@ -171,6 +171,7 @@ class _LoginRequiredState<T extends UserBase> extends State<LoginRequired<T>>
       Navigator.pushNamed(context, AuthScreen.routeName,
               arguments: LoginRequired.currentUser)
           .then((value) {
+        print('Or did this happen first? then()');
         // set login state
         LoginRequired.currentUser = value as T?;
 
@@ -183,9 +184,10 @@ class _LoginRequiredState<T extends UserBase> extends State<LoginRequired<T>>
             _printNavState();
           });
         }
-        // user pressed BACK key on AuthScreen
+        // user pressed BACK key on AuthScreen (Android)
+        // or swiped right on iOS
         else {
-          assert(Platform.isAndroid);
+          //assert(Platform.isAndroid);
           LoginRequired.navState = NavState.LoginPausedByBackButton;
           print("_loginFlow() : Moving to background.");
           MoveToBackground.moveTaskToBack();
