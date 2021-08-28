@@ -15,8 +15,10 @@ class Devotion extends StatefulWidget {
 }
 
 class _DevotionState extends State<Devotion> {
+  // mp3 filename obtained from https://feed.podbean.com/navigate/feed.xml
+  // might be nice to parse xml file and get filename automatically ...
   final String mp3File =
-      "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3";
+      'https://mcdn.podbean.com/mf/web/2a6f67/Navigate_-_Where_we_are_nowbpux0.mp3';
 
   Widget build(BuildContext context) {
     DocumentReference<Map<String, dynamic>> devotion =

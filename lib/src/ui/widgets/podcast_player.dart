@@ -1,5 +1,5 @@
 // copied from https://github.com/luanpotter/audioplayers/blob/master/packages/audioplayers/example/lib/player_widget.dart
-
+// [ renamed PlayerWidget ==> PodcastPlayer ]
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
