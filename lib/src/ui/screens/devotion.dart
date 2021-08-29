@@ -16,10 +16,7 @@ class Devotion extends StatefulWidget {
 }
 
 class _DevotionState extends State<Devotion> {
-  // mp3 filename obtained from https://feed.podbean.com/navigate/feed.xml
-  // might be nice to parse xml file and get filename automatically ...
-  final String mp3File =
-      'https://mcdn.podbean.com/mf/web/2a6f67/Navigate_-_Where_we_are_nowbpux0.mp3';
+  // mp3 filenames obtained from https://feed.podbean.com/navigate/feed.xml
 
   Widget build(BuildContext context) {
     DocumentReference<Map<String, dynamic>> devotion =
@@ -65,39 +62,58 @@ class _DevotionState extends State<Devotion> {
           appBar: AppBar(
             title: Text(
               'Navigate Podcast',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.bodyText1?.color,
+              ),
             ),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                devotionData.title,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-              ),
-              Text(
-                devotionData.toLocalDateTime().toString(),
-                style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
-              ),
-              Link(
-                uri: Uri.parse(devotionData.verseURL),
-                builder: (context, onClick) => ElevatedButton(
-                  onPressed: onClick,
-                  child: Text(
-                    devotionData.verseText,
-                    style: TextStyle(fontSize: 18.0),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                  devotionData.title,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                ),
+                Text(
+                  devotionData.toLocalDateTime().toString(),
+                  style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+                ),
+                Divider(),
+                Text(
+                  'Read',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+                Link(
+                  uri: Uri.parse(devotionData.verseURL),
+                  builder: (context, handler) => ElevatedButton(
+                    onPressed: handler,
+                    child: Text(
+                      devotionData.verseText,
+                      style: TextStyle(fontSize: 18.0),
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                devotionData.prayerPoints,
-                style: TextStyle(fontSize: 18.0),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: PodcastPlayer(url: mp3File),
-              ),
-            ],
+                Divider(),
+                Text(
+                  'Listen',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: PodcastPlayer(url: devotionData.listenURL),
+                ),
+                Divider(),
+                Text(
+                  'Pray',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  devotionData.prayerPoints,
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              ],
+            ),
           ),
         );
 

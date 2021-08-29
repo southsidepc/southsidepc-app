@@ -17,7 +17,7 @@ String? validateName(String? value) {
 }
 
 String? validateMobile(String? value) {
-  String pattern = r'(^\+?[0-9]*$)';
+  String pattern = r'(^\+?[0-9 ]*$)';
   RegExp regExp = new RegExp(pattern);
   if (value?.length == 0) {
     return "Mobile phone number is required";

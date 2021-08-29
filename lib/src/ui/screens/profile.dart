@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:southsidepc/src/models/user_state.dart';
 
 import 'package:southsidepc/login_required/login_required.dart';
+import 'package:southsidepc/src/ui/widgets/popup_edit_profile.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -13,6 +14,10 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final List<String> _order = ['events', 'navigate'];
   final List<bool> _checkBoxes = [true, true];
+
+  String _if_non_empty(String s, String empty) {
+    return s != '' ? s : empty;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +30,15 @@ class _ProfileState extends State<Profile> {
           ListTile(
             leading: CircleAvatar(child: Text(user.initials)),
             title: Text(user.name),
-            subtitle: Text(user.email + '\n' + user.phone),
+            subtitle: Text(user.email +
+                '\n' +
+                _if_non_empty(user.phone, 'Phone number empty')),
             trailing: ElevatedButton(
               child: Text("Edit"),
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                    context: context, builder: (_) => PopupEditProfile(user));
+              },
             ),
           ),
           Divider(),
