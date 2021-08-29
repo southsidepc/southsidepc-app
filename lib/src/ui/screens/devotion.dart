@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:southsidepc/src/ui/widgets/podcast_player.dart';
 import 'package:southsidepc/src/models/devotion_data.dart';
+import 'package:url_launcher/link.dart';
 
 class Devotion extends StatefulWidget {
   static const routeName = '/devotion';
@@ -61,15 +62,42 @@ class _DevotionState extends State<Devotion> {
         }
 
         return Scaffold(
-          body: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 30.0),
-              child: PodcastPlayer(url: mp3File),
+          appBar: AppBar(
+            title: Text(
+              'Navigate Podcast',
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            /*IconButton(
-              icon: _getIcon(),
-              onPressed: () async => await _onPressed(),
-            ),*/
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                devotionData.title,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+              ),
+              Text(
+                devotionData.toLocalDateTime().toString(),
+                style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+              ),
+              Link(
+                uri: Uri.parse(devotionData.verseURL),
+                builder: (context, onClick) => ElevatedButton(
+                  onPressed: onClick,
+                  child: Text(
+                    devotionData.verseText,
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                ),
+              ),
+              Text(
+                devotionData.prayerPoints,
+                style: TextStyle(fontSize: 18.0),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: PodcastPlayer(url: mp3File),
+              ),
+            ],
           ),
         );
 

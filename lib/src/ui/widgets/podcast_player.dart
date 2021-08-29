@@ -27,6 +27,9 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
   String url;
   PlayerMode mode;
 
+  final double iconSize = 32.0;
+  final double textSize = 14.0;
+
   late AudioPlayer _audioPlayer;
   PlayerState? _audioPlayerState;
   Duration? _duration;
@@ -80,27 +83,27 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
             IconButton(
               key: const Key('play_button'),
               onPressed: _isPlaying ? null : _play,
-              iconSize: 64.0,
+              iconSize: iconSize,
               icon: const Icon(Icons.play_arrow),
               color: Colors.cyan,
             ),
             IconButton(
               key: const Key('pause_button'),
               onPressed: _isPlaying ? _pause : null,
-              iconSize: 64.0,
+              iconSize: iconSize,
               icon: const Icon(Icons.pause),
               color: Colors.cyan,
             ),
             IconButton(
               key: const Key('stop_button'),
               onPressed: _isPlaying || _isPaused ? _stop : null,
-              iconSize: 64.0,
+              iconSize: iconSize,
               icon: const Icon(Icons.stop),
               color: Colors.cyan,
             ),
             IconButton(
               onPressed: _earpieceOrSpeakersToggle,
-              iconSize: 64.0,
+              iconSize: iconSize,
               icon: _isPlayingThroughEarpiece
                   ? const Icon(Icons.volume_up)
                   : const Icon(Icons.hearing),
@@ -112,7 +115,7 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(4.0),
               child: Stack(
                 children: [
                   Slider(
@@ -142,11 +145,10 @@ class _PodcastPlayerState extends State<PodcastPlayer> {
                   : _duration != null
                       ? _durationText
                       : '',
-              style: const TextStyle(fontSize: 24.0),
+              style: TextStyle(fontSize: textSize),
             ),
           ],
         ),
-        Text('State: $_audioPlayerState'),
       ],
     );
   }
