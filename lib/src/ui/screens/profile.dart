@@ -37,7 +37,15 @@ class _ProfileState extends State<Profile> {
               child: Text("Edit"),
               onPressed: () {
                 showDialog(
-                    context: context, builder: (_) => PopupEditProfile(user));
+                  context: context,
+                  builder: (_) => PopupEditProfile(user),
+                ).then(
+                  (value) {
+                    if (value != null) {
+                      setState(() {});
+                    }
+                  },
+                );
               },
             ),
           ),
@@ -65,7 +73,7 @@ class _ProfileState extends State<Profile> {
           Divider(),
           Expanded(
             child: Align(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.topRight,
               child: ElevatedButton(
                 child: Text("Logout"),
                 onPressed: () {

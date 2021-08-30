@@ -68,9 +68,9 @@ class Media extends StatelessWidget {
                   await launch(url);
                 }
               },*/
-              label: Text('Select a devotion ...'),
+              label: Text('View in app'),
               icon: Icon(
-                CommunityMaterialIcons.spotify,
+                CommunityMaterialIcons.application,
                 color: spotifyGreen,
               ),
               onPressed: () {
