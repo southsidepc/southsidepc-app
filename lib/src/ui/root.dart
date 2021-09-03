@@ -1,6 +1,9 @@
 import "package:flutter/material.dart";
 import "package:community_material_icon/community_material_icon.dart";
 
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+
 import 'package:southsidepc/login_required/login_required.dart';
 import 'package:southsidepc/src/models/user_state.dart';
 
@@ -13,7 +16,7 @@ import "screens/profile.dart";
 class Root extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    MaterialColor southsideNavy = MaterialColor(
+    MaterialColor southsideNavy = const MaterialColor(
       0xFF182943,
       <int, Color>{
         50: const Color(0xFFE3E5E8),
@@ -29,7 +32,7 @@ class Root extends StatelessWidget {
       },
     );
 
-    MaterialColor southsideNavyDark = MaterialColor(
+    MaterialColor southsideNavyDark = const MaterialColor(
       0xFF8a899a,
       <int, Color>{
         50: const Color(0xFF8a899a),
@@ -164,9 +167,13 @@ class _NavUIState extends State<NavUI> {
         items: _screenNavBars,
         currentIndex: _selectedIndex,
         onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+          showTopSnackBar(
+            context,
+            CustomSnackBar.info(message: 'Ha! You tried to navigate.'),
+          );
+          //setState(() {
+          //  _selectedIndex = index;
+          //});
         },
         type: BottomNavigationBarType.fixed,
       ),
