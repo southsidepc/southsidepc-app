@@ -37,8 +37,7 @@ dependencies:
   cupertino_setting_control: ^1.0.2
   audioplayers: ^0.19.1
   top_snackbar_flutter: ^1.0.0
-
-
+  get_it: ^7.2.0
 
 dev_dependencies:
 

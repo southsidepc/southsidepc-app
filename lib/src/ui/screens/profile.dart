@@ -1,7 +1,13 @@
+import 'dart:io';
+import 'dart:math';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:southsidepc/src/models/user_state.dart';
+
+import 'package:southsidepc/src/locator.dart';
 
 import 'package:southsidepc/login_required/login_required.dart';
 import 'package:southsidepc/src/ui/widgets/popup_edit_profile.dart';
@@ -17,6 +23,37 @@ class _ProfileState extends State<Profile> {
 
   String _if_non_empty(String s, String empty) {
     return s != '' ? s : empty;
+  }
+
+  List<Widget> _notifications() {
+    var user = LoginRequired.currentUser;
+    var authStatus = locator<NotificationSettings>().authorizationStatus;
+    var enabled = authStatus == AuthorizationStatus.authorized ||
+        authStatus == AuthorizationStatus.provisional;
+    return [
+      Text(
+        'Notifications' + (enabled ? '' : ' - not available on this device'),
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20.0,
+        ),
+      ),
+      ...user.notifications.map((e) {
+        return Row(
+          children: [
+            Flexible(child: Text('- $e'), fit: FlexFit.tight),
+            Checkbox(
+              value: _checkBoxes[_order.indexOf(e)],
+              onChanged: enabled
+                  ? (value) => setState(() {
+                        _checkBoxes[_order.indexOf(e)] = value!;
+                      })
+                  : null,
+            ),
+          ],
+        );
+      }) // map
+    ]; // return
   }
 
   @override
@@ -50,26 +87,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           Divider(),
-          Text(
-            'Notifications',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
-          ),
-          ...user.notifications.map((e) {
-            return Row(
-              children: [
-                Flexible(child: Text('- $e'), fit: FlexFit.tight),
-                Checkbox(
-                  value: _checkBoxes[_order.indexOf(e)],
-                  onChanged: (value) => setState(() {
-                    _checkBoxes[_order.indexOf(e)] = value!;
-                  }),
-                ),
-              ],
-            );
-          }), // map()
+          ..._notifications(),
           Divider(),
           Expanded(
             child: Align(

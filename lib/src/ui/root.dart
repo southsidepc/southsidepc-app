@@ -1,11 +1,15 @@
 import "package:flutter/material.dart";
 import "package:community_material_icon/community_material_icon.dart";
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 
 import 'package:southsidepc/login_required/login_required.dart';
 import 'package:southsidepc/src/models/user_state.dart';
+
+import '../locator.dart';
 
 import "screens/home.dart";
 import "screens/coffee.dart";
@@ -102,6 +106,11 @@ class NavUI extends StatefulWidget {
 
 /// class _NavUI
 class _NavUIState extends State<NavUI> {
+  ////////////////////////
+  // firebase messaging //
+  ////////////////////////
+  final _messaging = FirebaseMessaging.instance;
+
   /////////////////////////////////////////////////////////////////
   // const data: For each screen - label, widget, icon => navbar //
   /////////////////////////////////////////////////////////////////
@@ -171,60 +180,82 @@ class _NavUIState extends State<NavUI> {
             context,
             CustomSnackBar.info(message: 'Ha! You tried to navigate.'),
           );
-          //setState(() {
-          //  _selectedIndex = index;
-          //});
+          setState(() {
+            _selectedIndex = index;
+          });
         },
         type: BottomNavigationBarType.fixed,
       ),
     );
   }
 
+  Future<void> _requestPermission() async {
+    locator.registerSingleton<NotificationSettings>(
+        await _messaging.requestPermission());
+  }
+
   /////////////////
   // initState() //
   /////////////////
-  /*@override
+  @override
   void initState() {
     super.initState();
+    _requestPermission();
+    FirebaseMessaging.onMessage.listen((message) {
+      print('onMessage: $message');
+      print('category: ${message.category}');
+      print('from: ${message.from}');
+      print('messageId: ${message.messageId}');
+      print('messageType: ${message.messageType}');
+      print('notification: ${message.notification}');
+      print('senderId: ${message.senderId}');
+      print('sentTime: ${message.sentTime}');
+      print('data: ${message.data}');
+    });
 
-    /*_firebaseMessaging.configure(
+    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
+
+    _messaging.subscribeToTopic('events');
+    _messaging.subscribeToTopic('devotions');
+
+    /*_messaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        */ /*Navigator.pushNamed(
+        Navigator.pushNamed(
           context,
           Event.routeName,
-          arguments: EventArguments(
-              message['data']['eventId']
-          ),
-        );*/ /*
+          arguments: EventArguments(message['data']['eventId']),
+        );
       },
       onBackgroundMessage: myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
-        if (message['data']['eventId'] != null && message['data']['eventId'] != "" && ModalRoute.of(context).settings.name != Event.routeName) {
+        if (message['data']['eventId'] != null &&
+            message['data']['eventId'] != "" &&
+            ModalRoute.of(context).settings.name != Event.routeName) {
           Navigator.pushNamed(
             context,
             Event.routeName,
-            arguments: EventArguments(
-                message['data']['eventId']
-            ),
+            arguments: EventArguments(message['data']['eventId']),
           );
         }
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-        if (message['data']['eventId'] != null && message['data']['eventId'] != "" && ModalRoute.of(context).settings.name != Event.routeName) {
+        if (message['data']['eventId'] != null &&
+            message['data']['eventId'] != "" &&
+            ModalRoute.of(context).settings.name != Event.routeName) {
           Navigator.pushNamed(
             context,
             Event.routeName,
-            arguments: EventArguments(
-                message['data']['eventId']
-            ),
+            arguments: EventArguments(message['data']['eventId']),
           );
         }
       },
-    );
-    
-    _firebaseMessaging.subscribeToTopic('events');*/
-  }*/
+    );*/
+  }
+}
+
+Future<void> _backgroundMessageHandler(RemoteMessage message) async {
+  print('onBackgroundMessage: $message');
 }
