@@ -256,6 +256,7 @@ class _NavUIState extends State<NavUI> {
   }
 }
 
+// FirebaseCloudMessaging background handler must be a top-level function.
 Future<void> _backgroundMessageHandler(RemoteMessage message) async {
   print('onBackgroundMessage: $message');
 }
