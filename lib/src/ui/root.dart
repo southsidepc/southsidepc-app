@@ -16,6 +16,8 @@ import "screens/coffee.dart";
 import 'screens/media.dart';
 import "screens/connect.dart";
 import "screens/profile.dart";
+import 'screens/event.dart';
+import 'screens/devotion.dart';
 
 class Root extends StatelessWidget {
   @override
@@ -176,10 +178,6 @@ class _NavUIState extends State<NavUI> {
         items: _screenNavBars,
         currentIndex: _selectedIndex,
         onTap: (index) {
-          showTopSnackBar(
-            context,
-            CustomSnackBar.info(message: 'Ha! You tried to navigate.'),
-          );
           setState(() {
             _selectedIndex = index;
           });
@@ -189,7 +187,7 @@ class _NavUIState extends State<NavUI> {
     );
   }
 
-  Future<void> _requestPermission() async {
+  Future<void> _requestMessagingPermission() async {
     locator.registerSingleton<NotificationSettings>(
         await _messaging.requestPermission());
   }
@@ -200,25 +198,96 @@ class _NavUIState extends State<NavUI> {
   @override
   void initState() {
     super.initState();
-    _requestPermission();
-    FirebaseMessaging.onMessage.listen((message) {
-      print('onMessage: $message');
-      print('category: ${message.category}');
-      print('from: ${message.from}');
-      print('messageId: ${message.messageId}');
-      print('messageType: ${message.messageType}');
-      print('notification: ${message.notification}');
-      print('senderId: ${message.senderId}');
-      print('sentTime: ${message.sentTime}');
-      print('data: ${message.data}');
-    });
 
+    // get permission (run only once?)
+    _requestMessagingPermission();
+
+    // regular (foreground) message handler
+    FirebaseMessaging.onMessage.listen(_onMessage);
+
+    // background message handler
     FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
 
+    // subscribe to all topics
+    // (message handlers will determine if it needs to be shown)
     _messaging.subscribeToTopic('events');
     _messaging.subscribeToTopic('devotions');
+  }
 
-    /*_messaging.configure(
+  //////////////////
+  // _onMessage() //
+  //////////////////
+  void _onMessage(RemoteMessage msg) {
+    // debug
+    print('onMessage()');
+    print('category: ${msg.category}');
+    print('from: ${msg.from}');
+    print('messageId: ${msg.messageId}');
+    print('messageType: ${msg.messageType}');
+    print('notification: ${msg.notification}');
+    print('senderId: ${msg.senderId}');
+    print('sentTime: ${msg.sentTime}');
+    print('data: ${msg.data}');
+
+    // get topic, or error
+    var result = msg.from?.split('/topics/');
+    print('Split into ${result?.length} pieces: $result');
+    var topic = result?[1];
+    print('topic = $topic');
+    if (topic == null) {
+      print('Could not determine topic. Aborting.');
+      return;
+    } else if (topic != 'events' && topic != 'devotions') {
+      print('I don\'t know how to process the topic $topic. Aborting.');
+      return;
+    }
+
+    // is user subscribed to this topic?
+    // (abort if user is null)
+    var user = LoginRequired.currentUser as UserState?;
+    if (user == null) {
+      print('User is null. Weird. Aborting.');
+      return;
+    }
+    if (!user.notifications.contains(topic)) {
+      print('User is not subscribed to this topic. Aborting.');
+      return;
+    }
+
+    // get database key for resource (event or devotion)
+    // or, error
+    var key = msg.data['key'] ?? '';
+    if (key == '') {
+      print('Empty key. Aborting.');
+      return;
+    }
+
+    // display snackbar
+    showTopSnackBar(
+      context,
+      CustomSnackBar.info(
+          message:
+              'Southside: Click to check out a new item in the $topic feed!'),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => topic == 'events' ? Event(key) : Devotion(key),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// Messaging background handler must be a top-level function.
+Future<void> _backgroundMessageHandler(RemoteMessage message) async {
+  print('onBackgroundMessage: $message');
+}
+
+
+
+/*_messaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         Navigator.pushNamed(
@@ -253,10 +322,3 @@ class _NavUIState extends State<NavUI> {
         }
       },
     );*/
-  }
-}
-
-// FirebaseCloudMessaging background handler must be a top-level function.
-Future<void> _backgroundMessageHandler(RemoteMessage message) async {
-  print('onBackgroundMessage: $message');
-}

@@ -240,8 +240,9 @@ class _LoginRequiredState<T extends UserBase> extends State<LoginRequired<T>>
       case NavState.LoginPausedByHomeButton:
       case NavState.NormalPaused:
       case NavState.Startup:
-        throw Exception(
+        print(
             "navState has value ${LoginRequired.navState}, which shouldn't occur in LoginRequired.build()");
+        break;
       default:
         throw Exception("LoginRequired.build() not fully implemented.");
     }
