@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,15 +15,12 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final List<String> _order = ['events', 'navigate'];
-  final List<bool> _checkBoxes = [true, true];
-
   String _if_non_empty(String s, String empty) {
     return s != '' ? s : empty;
   }
 
   List<Widget> _notifications() {
-    var user = LoginRequired.currentUser;
+    var user = LoginRequired.currentUser as UserState;
     var authStatus = locator<NotificationSettings>().authorizationStatus;
     var enabled = authStatus == AuthorizationStatus.authorized ||
         authStatus == AuthorizationStatus.provisional;
@@ -38,16 +32,18 @@ class _ProfileState extends State<Profile> {
           fontSize: 20.0,
         ),
       ),
-      ...user.notifications.map((e) {
+      ...UserState.NotifyStrings.map((notifyString) {
         return Row(
           children: [
-            Flexible(child: Text('- $e'), fit: FlexFit.tight),
+            Flexible(child: Text('- $notifyString'), fit: FlexFit.tight),
             Checkbox(
-              value: _checkBoxes[_order.indexOf(e)],
+              value: user.hasNotification(notifyString),
               onChanged: enabled
-                  ? (value) => setState(() {
-                        _checkBoxes[_order.indexOf(e)] = value!;
-                      })
+                  ? (value) async {
+                      user.setNotification(notifyString, value!);
+                      user.updateRemote();
+                      setState(() {});
+                    }
                   : null,
             ),
           ],

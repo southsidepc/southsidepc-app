@@ -2,9 +2,7 @@
 // https://stackoverflow.com/questions/54480641/flutter-how-to-create-forms-in-popup
 
 import 'package:flutter/material.dart';
-import 'package:southsidepc/login_required/authenticate.dart';
 import 'package:southsidepc/login_required/helper.dart';
-import 'package:southsidepc/login_required/login_required.dart';
 import 'package:southsidepc/src/models/user_state.dart';
 
 class PopupEditProfile extends StatefulWidget {
@@ -114,7 +112,7 @@ class _PopupEditProfileState extends State<PopupEditProfile> {
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
                       _formKey.currentState?.save();
-                      await FireStoreUtils.updateCurrentUser(widget.user);
+                      await widget.user.updateRemote();
                       Navigator.pop(context, true); // non-null = success
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('Profile updated.'),

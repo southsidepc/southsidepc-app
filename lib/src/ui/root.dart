@@ -249,7 +249,7 @@ class _NavUIState extends State<NavUI> {
       print('User is null. Weird. Aborting.');
       return;
     }
-    if (!user.notifications.contains(topic)) {
+    if (!user.hasNotification(topic)) {
       print('User is not subscribed to this topic. Aborting.');
       return;
     }
