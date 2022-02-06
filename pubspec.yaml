@@ -92,3 +92,6 @@ flutter:
     - assets/instagram_icon.png
     - assets/cover_bright.png
     - assets/cover_dark.png
+    - assets/avatar-placeholder.jpg
+    - assets/logo-full.png
+    - assets/logo-full-dark.png

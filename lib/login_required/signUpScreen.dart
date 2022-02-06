@@ -1,9 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'user_base.dart';
 import 'constants.dart';
 import 'authenticate.dart';
@@ -34,11 +31,7 @@ class _SignUpState extends State<SignUpScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: new Container(
           margin: new EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
@@ -76,8 +69,8 @@ class _SignUpState extends State<SignUpScreen> {
           isDefaultAction: false,
           onPressed: () async {
             Navigator.pop(context);
-            PickedFile? image =
-                await _imagePicker.getImage(source: ImageSource.gallery);
+            XFile? image =
+                await _imagePicker.pickImage(source: ImageSource.gallery);
             if (image != null)
               setState(() {
                 _image = File(image.path);
@@ -89,8 +82,8 @@ class _SignUpState extends State<SignUpScreen> {
           isDestructiveAction: false,
           onPressed: () async {
             Navigator.pop(context);
-            PickedFile? image =
-                await _imagePicker.getImage(source: ImageSource.camera);
+            XFile? image =
+                await _imagePicker.pickImage(source: ImageSource.camera);
             if (image != null)
               setState(() {
                 _image = File(image.path);
@@ -116,7 +109,6 @@ class _SignUpState extends State<SignUpScreen> {
             child: Text(
               'Create new account',
               style: TextStyle(
-                  color: Color(COLOR_PRIMARY),
                   fontWeight: FontWeight.bold,
                   fontSize: 25.0),
             )),
@@ -135,7 +127,7 @@ class _SignUpState extends State<SignUpScreen> {
                     height: 170,
                     child: _image == null
                         ? Image.asset(
-                            'assets/images/placeholder.jpg',
+                            'assets/avatar-placeholder.jpg',
                             fit: BoxFit.cover,
                           )
                         : Image.file(
@@ -149,7 +141,6 @@ class _SignUpState extends State<SignUpScreen> {
                 left: 80,
                 right: 0,
                 child: FloatingActionButton(
-                    backgroundColor: Color(COLOR_PRIMARY),
                     child: Icon(Icons.camera_alt),
                     mini: true,
                     onPressed: _onCameraClick),
@@ -167,17 +158,11 @@ class _SignUpState extends State<SignUpScreen> {
                     onSaved: (val) => name = val,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
-                        fillColor: Colors.white,
                         hintText: 'Name',
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                                color: Color(COLOR_PRIMARY), width: 2.0)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ))))),
+                    )
+                )
+            )
+        ),
         ConstrainedBox(
             constraints: BoxConstraints(minWidth: double.infinity),
             child: Padding(
@@ -189,17 +174,11 @@ class _SignUpState extends State<SignUpScreen> {
                     validator: validateEmail,
                     onSaved: (val) => email = val,
                     decoration: InputDecoration(
-                        contentPadding: new EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
-                        fillColor: Colors.white,
                         hintText: 'Email Address',
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                                color: Color(COLOR_PRIMARY), width: 2.0)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ))))),
+                    )
+                )
+            )
+        ),
         ConstrainedBox(
             constraints: BoxConstraints(minWidth: double.infinity),
             child: Padding(
@@ -210,21 +189,12 @@ class _SignUpState extends State<SignUpScreen> {
                   controller: _passwordController,
                   validator: validatePassword,
                   onSaved: (val) => password = val,
-                  style: TextStyle(height: 0.8, fontSize: 18.0),
-                  cursorColor: Color(COLOR_PRIMARY),
                   decoration: InputDecoration(
-                      contentPadding:
-                          new EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      fillColor: Colors.white,
                       hintText: 'Password',
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          borderSide: BorderSide(
-                              color: Color(COLOR_PRIMARY), width: 2.0)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ))),
-            )),
+                  )
+              ),
+            )
+        ),
         ConstrainedBox(
           constraints: BoxConstraints(minWidth: double.infinity),
           child: Padding(
@@ -236,20 +206,10 @@ class _SignUpState extends State<SignUpScreen> {
                 validator: (val) =>
                     validateConfirmPassword(_passwordController.text, val),
                 onSaved: (val) => confirmPassword = val,
-                style: TextStyle(height: 0.8, fontSize: 18.0),
-                cursorColor: Color(COLOR_PRIMARY),
                 decoration: InputDecoration(
-                    contentPadding:
-                        new EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    fillColor: Colors.white,
                     hintText: 'Confirm Password',
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                            color: Color(COLOR_PRIMARY), width: 2.0)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                    ))),
+                )
+            ),
           ),
         ),
         Padding(
@@ -257,23 +217,8 @@ class _SignUpState extends State<SignUpScreen> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(minWidth: double.infinity),
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color(COLOR_PRIMARY),
-                padding: EdgeInsets.only(top: 12, bottom: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0),
-                  side: BorderSide(
-                    color: Color(COLOR_PRIMARY),
-                  ),
-                ),
-              ),
               child: Text(
                 'Sign Up',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
               ),
               onPressed: _signUp,
             ),

@@ -32,10 +32,14 @@ class Media extends StatelessWidget {
             OutlinedButton.icon(
               onPressed: () async {
                 String url =
-                    'https://open.spotify.com/playlist/5p0cw0WFvC5Bmkf5vyR4bG?si=-oj_dClxRUeeOUOWbg091g';
+                    'https://open.spotify.com/playlist/5p0cw0WFvC5Bmkf5vyR4bG';
 
-                if (await canLaunch(url)) {
+                try {
                   await launch(url);
+                } catch(exception) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Something went wrong. Try again."),
+                  ));
                 }
               },
               icon: Icon(
@@ -120,10 +124,14 @@ class Media extends StatelessWidget {
             OutlinedButton.icon(
               onPressed: () async {
                 String url =
-                    'https://open.spotify.com/show/0HrMcpDD9YDdyMfOyojmFe?si=NUvzGQUwTrCxijZHAkSvcg';
+                    'https://open.spotify.com/show/0HrMcpDD9YDdyMfOyojmFe';
 
-                if (await canLaunch(url)) {
+                try {
                   await launch(url);
+                } catch(exception) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Something went wrong. Try again."),
+                  ));
                 }
               },
               icon: Icon(
@@ -163,8 +171,12 @@ class Media extends StatelessWidget {
               onPressed: () async {
                 String url = 'https://soundcloud.com/southside-presbyterian';
 
-                if (await canLaunch(url)) {
+                try {
                   await launch(url);
+                } catch(exception) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Something went wrong. Try again."),
+                  ));
                 }
               },
               icon: Icon(
@@ -182,12 +194,12 @@ class Media extends StatelessWidget {
               onPressed: () async {
                 String url = 'https://southsidepc.org/live';
 
-                if (await canLaunch(url)) {
+                try {
                   await launch(url);
-                } else {
+                } catch(exception) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                          'The podcast could not be opened. Please install podcast app.')));
+                    content: Text("Something went wrong. Try again."),
+                  ));
                 }
               },
               icon: Icon(CommunityMaterialIcons.video_outline),

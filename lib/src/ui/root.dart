@@ -65,8 +65,11 @@ class Root extends StatelessWidget {
       theme: ThemeData(
         canvasColor: Colors.white,
         appBarTheme: AppBarTheme(
-          brightness: Brightness.dark,
           color: Colors.white,
+          elevation: 0.0,
+          iconTheme: IconThemeData(
+            color: southsideNavy
+          )
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           unselectedIconTheme: IconThemeData(
@@ -76,21 +79,104 @@ class Root extends StatelessWidget {
           selectedItemColor: southsideNavy,
         ),
         primarySwatch: southsideNavy,
-        buttonColor: southsideNavy,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.only(top: 12, bottom: 12, left: 18, right: 18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+            textStyle: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            )
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.only(top: 12, bottom: 12, left: 18, right: 18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
+
+            ),
+              side: BorderSide(
+                  color: southsideNavy,
+                  width: 2
+              ),
+              textStyle: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              )
+          )
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+            contentPadding: EdgeInsets.only(left: 16, right: 16),
+            fillColor: Colors.white,
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                borderSide: BorderSide(width: 2.0)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+        ),
       ),
       darkTheme: ThemeData(
+        canvasColor: Color(0xFF101010),
         brightness: Brightness.dark,
-        primarySwatch: southsideNavyDark,
         accentColor: southsideNavyDark,
+        primarySwatch: southsideNavyDark,
         appBarTheme: AppBarTheme(
           elevation: 0,
-          brightness: Brightness.dark,
+          backgroundColor: new Color(0xFF101010),
+            iconTheme: IconThemeData(
+                color: Colors.white
+            )
         ),
-        buttonColor: southsideNavyDark,
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF212121),
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white.withAlpha(100),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.only(top: 12, bottom: 12, left: 18, right: 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              textStyle: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              )
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+            style: OutlinedButton.styleFrom(
+                padding: EdgeInsets.only(top: 12, bottom: 12, left: 18, right: 18),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+
+                ),
+                side: BorderSide(
+                    color: southsideNavyDark,
+                    width: 2
+                ),
+                textStyle: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                )
+            )
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          contentPadding: EdgeInsets.only(left: 16, right: 16),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+              borderSide: BorderSide(
+                  width: 2.0,
+                color: southsideNavyDark
+              ),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+          ),
         ),
       ),
       themeMode: ThemeMode.system,
@@ -118,21 +204,21 @@ class _NavUIState extends State<NavUI> {
   /////////////////////////////////////////////////////////////////
   final List<String> _screenLabels = [
     "Home",
-    "Coffee",
+    //"Coffee",
     "Media",
     "Connect",
     "Profile",
   ];
   final List<Widget> _screenWidgets = [
     Home(),
-    Coffee(),
+    //Coffee(),
     Media(),
     Connect(),
     Profile(),
   ];
   final List<Icon> _screenIcons = [
     Icon(CommunityMaterialIcons.home_outline),
-    Icon(CommunityMaterialIcons.coffee_outline),
+    //Icon(CommunityMaterialIcons.coffee_outline),
     Icon(CommunityMaterialIcons.music_note_outline),
     Icon(CommunityMaterialIcons.link_box_outline),
     Icon(CommunityMaterialIcons.account_outline),
@@ -141,7 +227,7 @@ class _NavUIState extends State<NavUI> {
 
   /// _NavUIState()
   _NavUIState() {
-    const numScreens = 5;
+    const numScreens = 4;
 
     // _screenNavBars
     for (var i = 0; i < numScreens; ++i) {

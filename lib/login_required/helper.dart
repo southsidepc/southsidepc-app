@@ -61,20 +61,16 @@ showProgress(BuildContext context, String message, bool isDismissible) async {
   progressDialog = new ProgressDialog(context,
       type: ProgressDialogType.Normal, isDismissible: isDismissible);
   progressDialog.style(
+    backgroundColor: Theme.of(context).canvasColor,
       message: message,
       borderRadius: 10.0,
-      backgroundColor: Color(COLOR_PRIMARY),
       progressWidget: Container(
         padding: EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.white,
-          valueColor: AlwaysStoppedAnimation(Color(COLOR_PRIMARY)),
-        ),
+        child: CircularProgressIndicator(),
       ),
       elevation: 10.0,
       insetAnimCurve: Curves.easeInOut,
-      messageTextStyle: TextStyle(
-          color: Colors.white, fontSize: 19.0, fontWeight: FontWeight.w600));
+      messageTextStyle: TextStyle(fontSize: 19.0, fontWeight: FontWeight.w600));
   await progressDialog.show();
 }
 

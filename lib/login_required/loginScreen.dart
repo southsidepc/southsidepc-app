@@ -23,11 +23,7 @@ class _LoginScreen extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Colors.black),
-        elevation: 0.0,
-      ),
+      appBar: AppBar(),
       body: Form(
         key: _key,
         autovalidateMode: _validate,
@@ -39,7 +35,6 @@ class _LoginScreen extends State<LoginScreen> {
               child: Text(
                 'Sign In',
                 style: TextStyle(
-                    color: Color(COLOR_PRIMARY),
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold),
               ),
@@ -57,19 +52,10 @@ class _LoginScreen extends State<LoginScreen> {
                     onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
                     style: TextStyle(fontSize: 18.0),
                     keyboardType: TextInputType.emailAddress,
-                    cursorColor: Color(COLOR_PRIMARY),
                     decoration: InputDecoration(
-                        contentPadding:
-                            new EdgeInsets.only(left: 16, right: 16),
-                        fillColor: Colors.white,
                         hintText: 'E-mail Address',
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                                color: Color(COLOR_PRIMARY), width: 2.0)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ))),
+                    )
+                ),
               ),
             ),
             ConstrainedBox(
@@ -87,19 +73,10 @@ class _LoginScreen extends State<LoginScreen> {
                     obscureText: true,
                     textInputAction: TextInputAction.done,
                     style: TextStyle(fontSize: 18.0),
-                    cursorColor: Color(COLOR_PRIMARY),
                     decoration: InputDecoration(
-                        contentPadding:
-                            new EdgeInsets.only(left: 16, right: 16),
-                        fillColor: Colors.white,
-                        hintText: 'Password',
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                                color: Color(COLOR_PRIMARY), width: 2.0)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ))),
+                      hintText: 'Password',
+                    )
+                ),
               ),
             ),
             Padding(
@@ -107,21 +84,7 @@ class _LoginScreen extends State<LoginScreen> {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(minWidth: double.infinity),
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(COLOR_PRIMARY),
-                    padding: EdgeInsets.only(top: 12, bottom: 12),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        side: BorderSide(color: Color(COLOR_PRIMARY))),
-                  ),
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: Text('Log In',),
                   onPressed: () => login(),
                 ),
               ),
@@ -129,10 +92,7 @@ class _LoginScreen extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.all(32.0),
               child: Center(
-                child: Text(
-                  'OR',
-                  style: TextStyle(color: Colors.black),
-                ),
+                child: Text('OR'),
               ),
             ),
             Padding(
@@ -143,11 +103,6 @@ class _LoginScreen extends State<LoginScreen> {
                 child: ElevatedButton.icon(
                   label: Text(
                     'Facebook Login',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
                   ),
                   icon: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -160,12 +115,7 @@ class _LoginScreen extends State<LoginScreen> {
                   ),
                   style: ElevatedButton.styleFrom(
                     primary: Color(FACEBOOK_BUTTON_COLOR),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                      side: BorderSide(
-                        color: Color(FACEBOOK_BUTTON_COLOR),
-                      ),
-                    ),
+                    padding: EdgeInsets.only(top: 0, bottom: 0),
                   ),
                   onPressed: () async => loginWithFacebook(),
                 ),
